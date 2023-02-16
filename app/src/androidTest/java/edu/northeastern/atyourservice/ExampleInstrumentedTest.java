@@ -1,4 +1,4 @@
-package edu.northeastern.parentease;
+package edu.northeastern.atyourservice;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("edu.northeastern.parentease", appContext.getPackageName());
+        assertEquals("edu.northeastern.atyourservice", appContext.getPackageName());
     }
 }
