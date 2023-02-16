@@ -71,7 +71,7 @@ public final class NetworkUtil {
             }
             bufferedReader.close();
 
-            return stringBuilder.toString().replace(",", ",\n");
+            return stringBuilder.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
