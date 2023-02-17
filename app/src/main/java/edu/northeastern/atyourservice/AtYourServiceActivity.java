@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -43,6 +44,12 @@ public class AtYourServiceActivity extends AppCompatActivity {
 
     private static ArrayList<Weather> weatherList = new ArrayList<>();
 
+    //result city name
+    private TextView mCityTextView;
+
+    //result Date and Time
+    private TextView mDtTimeTextView;
+
     /**
      * The onCreate method called when the activity is starting.
      *
@@ -60,6 +67,9 @@ public class AtYourServiceActivity extends AppCompatActivity {
         inputCity = findViewById(R.id.inputCity);
 
         // Sets the click listener for the searchBtn button.
+        mCityTextView = findViewById(R.id.id_city);
+
+        // Sets the click listener for the okBtn button.
         searchBtn.setOnClickListener(view -> {
             // The geological info of the city will be located and used in the CallWebServiceTask.
             city = inputCity.getText().toString();
@@ -72,6 +82,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
 
             CallWebServiceTask callWebServiceTask = new CallWebServiceTask();
             callWebServiceTask.start();
+            mCityTextView.setText(city);
         });
     }
 
