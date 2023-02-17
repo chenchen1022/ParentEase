@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * The class for the "At Your Service" activity.
@@ -39,6 +40,8 @@ public class AtYourServiceActivity extends AppCompatActivity {
 
     // The array stores json objects representing the weather for the day.
     static JSONArray weatherDataArray;
+
+    private static ArrayList<Weather> weatherList = new ArrayList<>();
 
     /**
      * The onCreate method called when the activity is starting.
@@ -118,6 +121,39 @@ public class AtYourServiceActivity extends AppCompatActivity {
                 // *** This weatherDataArray has all the weather data. Check the console.
                 weatherDataArray = jsonObject.getJSONArray("list");
                 System.out.println(weatherDataArray);
+
+                String temp;
+                int tempInt;
+                String description;
+                String date;
+
+                // Get the temp, date, description
+                // Store in weather class
+                // add into arraylist
+                for(int i = 0; i < weatherDataArray.length();i++) {
+                    JSONObject innerObj = weatherDataArray.getJSONObject(i);
+                    JSONObject tempObj = innerObj.getJSONObject("main");
+                    temp = tempObj.getString("temp");
+                    tempInt = Double.valueOf(Double.valueOf(temp) - 273.15).intValue();
+                    temp = Integer.toString(tempInt) + " ℃";
+                    JSONArray weatherArray = innerObj.getJSONArray("weather");
+                    JSONObject weatherInnerObj = weatherArray.getJSONObject(0);
+                    description = weatherInnerObj.getString("description");
+                    date = innerObj.getString("dt_txt");
+                    date = date.substring(0, 9);
+
+                    if (i % 8 == 0) {
+                        Weather weather = new Weather(temp, description, date);
+                        weatherList.add(weather);
+                        System.out.println(temp);
+                        System.out.println(description);
+                        System.out.println(date);
+                        System.out.println("_________________________________");
+                    }
+
+                }
+
+
             } catch (IOException | JSONException e) {
                 throw new RuntimeException(e);
             }
