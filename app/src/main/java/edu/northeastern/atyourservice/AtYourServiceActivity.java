@@ -3,8 +3,8 @@ package edu.northeastern.atyourservice;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -12,7 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -24,10 +23,10 @@ public class AtYourServiceActivity extends AppCompatActivity {
     private static final String CITY_GEO_INFO_BASE_API_URL = "http://api.openweathermap.org/geo/1.0/direct";
 
     // The button the starts the api request.
-    private Button okBtn;
+    private ImageButton searchBtn;
 
     // The url for api requests.(we may not need this component since we do not want the user to change the website address)
-    private EditText inputUrl;
+    // private EditText inputUrl;
 
     // The url used to make api requests.
     private static URL url;
@@ -54,12 +53,11 @@ public class AtYourServiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_at_your_service);
 
-        okBtn = findViewById(R.id.okBtn);
-        inputUrl = findViewById(R.id.inputUrl);
+        searchBtn = findViewById(R.id.searchBtn);
         inputCity = findViewById(R.id.inputCity);
 
-        // Sets the click listener for the okBtn button.
-        okBtn.setOnClickListener(view -> {
+        // Sets the click listener for the searchBtn button.
+        searchBtn.setOnClickListener(view -> {
             // The geological info of the city will be located and used in the CallWebServiceTask.
             city = inputCity.getText().toString();
 
@@ -77,7 +75,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
     /**
      * Checks if the input data (city name, mode[today or future]) from the user is valid.
      *
-     * @return
+     * @return a boolean
      */
     private boolean isValidInput() {
         if (city == null) {
@@ -120,14 +118,10 @@ public class AtYourServiceActivity extends AppCompatActivity {
                 // *** This weatherDataArray has all the weather data. Check the console.
                 weatherDataArray = jsonObject.getJSONArray("list");
                 System.out.println(weatherDataArray);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (JSONException e) {
+            } catch (IOException | JSONException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 }
-/**
- *
- */
+
