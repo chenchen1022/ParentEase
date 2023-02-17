@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -42,6 +43,12 @@ public class AtYourServiceActivity extends AppCompatActivity {
     // The array stores json objects representing the weather for the day.
     static JSONArray weatherDataArray;
 
+    //result city name
+    private TextView mCityTextView;
+
+    //result Date and Time
+    private TextView mDtTimeTextView;
+
     /**
      * The onCreate method called when the activity is starting.
      *
@@ -58,6 +65,8 @@ public class AtYourServiceActivity extends AppCompatActivity {
         searchBtn = findViewById(R.id.searchBtn);
         inputCity = findViewById(R.id.inputCity);
 
+        mCityTextView = findViewById(R.id.id_city);
+
         // Sets the click listener for the okBtn button.
         searchBtn.setOnClickListener(view -> {
             // The geological info of the city will be located and used in the CallWebServiceTask.
@@ -71,7 +80,11 @@ public class AtYourServiceActivity extends AppCompatActivity {
 
             CallWebServiceTask callWebServiceTask = new CallWebServiceTask();
             callWebServiceTask.start();
+            mCityTextView.setText(city);
         });
+
+
+
     }
 
     /**
@@ -89,7 +102,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
     /**
      * The class for the thread created when clicking the okBtn button.
      */
-    static class CallWebServiceTask extends Thread {
+    class CallWebServiceTask extends Thread {
         @Override
         public void run() {
             try {
@@ -126,7 +139,12 @@ public class AtYourServiceActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
         }
-    }
+
+
+
+
+        }
+
 }
 /**
  *
