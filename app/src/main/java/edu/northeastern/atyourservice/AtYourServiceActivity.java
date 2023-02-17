@@ -3,6 +3,7 @@ package edu.northeastern.atyourservice;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -26,7 +28,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
     private ImageButton searchBtn;
 
     // The url for api requests.(we may not need this component since we do not want the user to change the website address)
-    // private EditText inputUrl;
+//    private EditText inputUrl;
 
     // The url used to make api requests.
     private static URL url;
@@ -56,7 +58,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
         searchBtn = findViewById(R.id.searchBtn);
         inputCity = findViewById(R.id.inputCity);
 
-        // Sets the click listener for the searchBtn button.
+        // Sets the click listener for the okBtn button.
         searchBtn.setOnClickListener(view -> {
             // The geological info of the city will be located and used in the CallWebServiceTask.
             city = inputCity.getText().toString();
@@ -75,7 +77,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
     /**
      * Checks if the input data (city name, mode[today or future]) from the user is valid.
      *
-     * @return a boolean
+     * @return
      */
     private boolean isValidInput() {
         if (city == null) {
@@ -118,10 +120,14 @@ public class AtYourServiceActivity extends AppCompatActivity {
                 // *** This weatherDataArray has all the weather data. Check the console.
                 weatherDataArray = jsonObject.getJSONArray("list");
                 System.out.println(weatherDataArray);
-            } catch (IOException | JSONException e) {
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 }
-
+/**
+ *
+ */
