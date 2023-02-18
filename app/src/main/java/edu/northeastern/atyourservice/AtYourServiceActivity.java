@@ -50,6 +50,8 @@ public class AtYourServiceActivity extends AppCompatActivity {
     //result Date and Time
     private TextView mDtTimeTextView;
 
+    private static TextView id_date_time;
+
     /**
      * The onCreate method called when the activity is starting.
      *
@@ -65,6 +67,8 @@ public class AtYourServiceActivity extends AppCompatActivity {
 
         searchBtn = findViewById(R.id.searchBtn);
         inputCity = findViewById(R.id.inputCity);
+
+        id_date_time = findViewById(R.id.id_date_time);
 
         // Sets the click listener for the searchBtn button.
         mCityTextView = findViewById(R.id.id_city);
@@ -83,6 +87,14 @@ public class AtYourServiceActivity extends AppCompatActivity {
             CallWebServiceTask callWebServiceTask = new CallWebServiceTask();
             callWebServiceTask.start();
             mCityTextView.setText(city);
+
+            try {
+                Thread.currentThread().sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            System.out.println(weatherList.get(0).getDateTime());
         });
     }
 
@@ -111,6 +123,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
                 String cityGeoInfoUrlStr = String.format("%s?q=%s&limit=%d&appid=%s", CITY_GEO_INFO_BASE_API_URL, city, 1, MY_API_KEY);
                 url = new URL(cityGeoInfoUrlStr);
                 String cityGeoInfoResponseStr = NetworkUtil.httpResponse(url);
+                System.out.println(cityGeoInfoResponseStr);
                 JSONArray cityGeoInfoResponseJsonArray = new JSONArray(cityGeoInfoResponseStr);
                 JSONObject cityGeoInfo = (JSONObject) cityGeoInfoResponseJsonArray.get(0);
                 double lat = Double.parseDouble(cityGeoInfo.getString("lat"));
@@ -131,7 +144,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
                 // Parses the json object and gets the corresponding json array.
                 // *** This weatherDataArray has all the weather data. Check the console.
                 weatherDataArray = jsonObject.getJSONArray("list");
-                System.out.println(weatherDataArray);
+//                System.out.println(weatherDataArray);
 
                 String temp;
                 int tempInt;
@@ -144,7 +157,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
                 // Get the temp, date, description
                 // Store in weather class
                 // add into arraylist
-                for(int i = 0; i < weatherDataArray.length();i++) {
+                for(int i = 0; i < weatherDataArray.length(); i++) {
                     JSONObject innerObj = weatherDataArray.getJSONObject(i);
                     // get temp
                     JSONObject tempObj = innerObj.getJSONObject("main");
@@ -169,7 +182,6 @@ public class AtYourServiceActivity extends AppCompatActivity {
                     // get date + time
                     dateTime = date + " " + time;
 
-
                     // get every 3 hour in 5 days weather data and add into weather list
                     Weather weather = new Weather(temp, description, dateTime);
                     weatherList.add(weather);
@@ -189,6 +201,8 @@ public class AtYourServiceActivity extends AppCompatActivity {
                     System.out.println(w.getDateTime());
                     System.out.println("************************");
                 }
+
+                id_date_time.setText(weatherList.get(0).getTemp());
 
             } catch (IOException | JSONException e) {
                 throw new RuntimeException(e);
