@@ -1,6 +1,8 @@
 package edu.northeastern.atyourservice;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.EditText;
@@ -15,6 +17,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The class for the "At Your Service" activity.
@@ -52,6 +55,14 @@ public class AtYourServiceActivity extends AppCompatActivity {
 
     private static TextView id_date_time;
 
+    private RecyclerView forecastRecyclerView;
+    private ForecastAdapter forecastAdapter;
+    private RecyclerView.LayoutManager forecastLayoutManager;
+    private List<WeeklyItems> list;
+
+    private static final String KEY_OF_DAYS = "KEY_OF_DAY";
+    private static final String NUMBER_OF_DAYS = "NUMBER_OF_DAYS";
+
     /**
      * The onCreate method called when the activity is starting.
      *
@@ -64,6 +75,9 @@ public class AtYourServiceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_at_your_service);
+
+        list = new ArrayList<>();
+        init(savedInstanceState);
 
         searchBtn = findViewById(R.id.searchBtn);
         inputCity = findViewById(R.id.inputCity);
@@ -209,5 +223,65 @@ public class AtYourServiceActivity extends AppCompatActivity {
             }
         }
     }
+
+    /* Manping Zhao
+     */
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        int size = list == null ? 0 : list.size();
+        outState.putInt(NUMBER_OF_DAYS, size);
+        for (int i = 0; i < size; i++) {
+            outState.putString(KEY_OF_DAYS + i + "0", list.get(i).getDay());
+            outState.putString(KEY_OF_DAYS + i + "1", list.get(i).getTemp());
+            outState.putString(KEY_OF_DAYS + i + "0", list.get(i).getDesc());
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    /* Manping Zhao
+     */
+
+    private void init(Bundle savedInstanceState) {
+        initialItemData(savedInstanceState);
+        createRecyclerView();
+    }
+
+    /*
+    Manping Zhao
+     */
+    private void initialItemData(Bundle savedInstanceState) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_DAYS)) {
+            if (list == null || list.size() == 0) {
+
+                int size = savedInstanceState.getInt(NUMBER_OF_DAYS);
+
+                // Retrieve keys we stored in the instance
+                for (int i = 0; i < size; i++) {
+                    String dayName = savedInstanceState.getString(KEY_OF_DAYS + i + "0");
+                    String dayTemp = savedInstanceState.getString(KEY_OF_DAYS + i + "1");
+                    String dayDesc = savedInstanceState.getString(KEY_OF_DAYS + i + "2");
+                    WeeklyItems weeklyItems = new WeeklyItems(dayName, dayTemp, dayDesc);
+                    list.add(weeklyItems);
+                }
+            }
+        }
+    }
+
+    /*
+    Manping Zhao
+     */
+    private void createRecyclerView() {
+        forecastRecyclerView = findViewById(R.id.recyclerView);
+        forecastLayoutManager = new LinearLayoutManager(this);
+        forecastAdapter = new ForecastAdapter(list);
+
+        forecastRecyclerView.setHasFixedSize(true);
+        forecastRecyclerView.setLayoutManager(forecastLayoutManager);
+
+        forecastRecyclerView.setAdapter(forecastAdapter);
+        forecastRecyclerView.setItemAnimator(null);
+    }
+
 }
 
