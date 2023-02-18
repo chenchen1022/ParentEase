@@ -6,382 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".AtYourServiceActivity">
 
-    <!--    <Button-->
-    <!--        android:id="@+id/okBtn"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="48dp"-->
-    <!--        android:text="OK"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.498"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        tools:layout_editor_absoluteY="341dp" />-->
+        <Button
+            android:id="@+id/okBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="OK"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="341dp" />
 
-    <!--    <androidx.constraintlayout.widget.Guideline-->
-    <!--        android:id="@+id/guideline6"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:orientation="horizontal"-->
-    <!--        app:layout_constraintGuide_percent="0.1" />-->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.1" />
 
-    <!--    <EditText-->
-    <!--        android:id="@+id/inputUrl"-->
-    <!--        android:layout_width="414dp"-->
-    <!--        android:layout_height="46dp"-->
-    <!--        android:ems="10"-->
-    <!--        android:inputType="textPersonName"-->
-    <!--        android:text="URL:"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/guideline6" />-->
+        <EditText
+            android:id="@+id/inputUrl"
+            android:layout_width="414dp"
+            android:layout_height="46dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="URL:"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
-    <!--    <EditText-->
-    <!--        android:id="@+id/inputCity"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:ems="10"-->
-    <!--        android:inputType="textPersonName"-->
-    <!--        android:text="Name of City"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/okBtn"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/inputUrl" />-->
-
-    <EditText
-        android:id="@+id/inputCity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="@string/enter_the_name_of_city"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/searchBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toEndOf="@+id/inputCity"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?android:attr/actionModeWebSearchDrawable"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <TextView
-        android:id="@+id/id_city"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="26dp"
-        android:text="City Name"
-        android:textColor="@color/gray"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/id_date_time"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline8" />
-
-    <TextView
-        android:id="@+id/id_date_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date and Time"
-        android:textColor="@color/gray"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/id_city"
-        app:layout_constraintVertical_bias="0.5" />
-
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:src="@drawable/cloud"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/id_degree"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline9" />
-
-    <TextView
-        android:id="@+id/id_degree"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="22°"
-        android:textColor="@color/city"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/id_des"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-
-    <TextView
-        android:id="@+id/id_des"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/id_degree"
-        android:text="cloudy"
-        android:textAllCaps="false"
-        android:textColor="@color/city"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/id_degree"
-        app:layout_constraintVertical_bias="0.2" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.35" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.66" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.73" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.79" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.91" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.96" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="415dp"
-        android:layout_height="220dp"
-        tools:layout_editor_absoluteX="-2dp"
-        tools:layout_editor_absoluteY="483dp"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/id_forecastDay1"
-        android:layout_width="120dp"
-        android:layout_height="24dp"
-        android:text="Day1"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/id_forecastIcon1"
-        app:layout_constraintTop_toBottomOf="@id/guideline10"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="504dp" />
-
-    <ImageView
-        android:id="@+id/id_forecastIcon1"
-        android:layout_width="56dp"
-        android:layout_height="27dp"
-        android:padding="10dp"
-        app:layout_constraintStart_toEndOf="@id/id_forecastDay1"
-        app:layout_constraintEnd_toStartOf="@id/id_forecastTemp1"
-        app:layout_constraintTop_toBottomOf="@id/guideline10"
-        tools:layout_editor_absoluteX="173dp"
-        tools:layout_editor_absoluteY="501dp" />
-
-    <TextView
-        android:id="@+id/id_forecastTemp1"
-        android:layout_width="120dp"
-        android:layout_height="24dp"
-        android:hint="temp"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@id/id_forecastIcon1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline10"
-        app:layout_constraintHorizontal_bias="0.2"
-        tools:layout_editor_absoluteX="275dp"
-        tools:layout_editor_absoluteY="504dp" />
-
-    <TextView
-        android:id="@+id/id_forecastDay2"
-        android:layout_width="120dp"
-        android:layout_height="24dp"
-        android:text="Day2"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/id_forecastIcon2"
-        app:layout_constraintTop_toBottomOf="@id/guideline11"
-
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="504dp" />
-
-    <ImageView
-        android:id="@+id/id_forecastIcon2"
-        android:layout_width="56dp"
-        android:layout_height="27dp"
-        android:padding="10dp"
-        app:layout_constraintStart_toEndOf="@id/id_forecastDay2"
-        app:layout_constraintEnd_toStartOf="@id/id_forecastTemp2"
-        app:layout_constraintTop_toBottomOf="@id/guideline11"
-        tools:layout_editor_absoluteX="173dp"
-        tools:layout_editor_absoluteY="501dp" />
-
-    <TextView
-        android:id="@+id/id_forecastTemp2"
-        android:layout_width="120dp"
-        android:layout_height="24dp"
-        android:hint="temp"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@id/id_forecastIcon2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline11"
-        app:layout_constraintHorizontal_bias="0.2"
-        tools:layout_editor_absoluteX="275dp"
-        tools:layout_editor_absoluteY="504dp" />
-
-    <TextView
-        android:id="@+id/id_forecastDay3"
-        android:layout_width="120dp"
-        android:layout_height="24dp"
-        android:text="Day3"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/id_forecastIcon3"
-        app:layout_constraintTop_toBottomOf="@id/guideline12"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="504dp" />
-
-    <ImageView
-        android:id="@+id/id_forecastIcon3"
-        android:layout_width="56dp"
-        android:layout_height="27dp"
-        android:padding="10dp"
-        app:layout_constraintStart_toEndOf="@id/id_forecastDay3"
-        app:layout_constraintEnd_toStartOf="@id/id_forecastTemp3"
-        app:layout_constraintTop_toBottomOf="@id/guideline12"
-        tools:layout_editor_absoluteX="173dp"
-        tools:layout_editor_absoluteY="501dp" />
-
-    <TextView
-        android:id="@+id/id_forecastTemp3"
-        android:layout_width="120dp"
-        android:layout_height="24dp"
-        android:hint="@string/temp"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@id/id_forecastIcon3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline12"
-        app:layout_constraintHorizontal_bias="0.2"
-        tools:layout_editor_absoluteX="275dp"
-        tools:layout_editor_absoluteY="504dp" />
-
-    <TextView
-        android:id="@+id/id_forecastDay4"
-        android:layout_width="120dp"
-        android:layout_height="24dp"
-        android:text="Day4"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/id_forecastIcon4"
-        app:layout_constraintTop_toBottomOf="@id/guideline13"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="504dp" />
-
-    <ImageView
-        android:id="@+id/id_forecastIcon4"
-        android:layout_width="56dp"
-        android:layout_height="27dp"
-        android:padding="10dp"
-        app:layout_constraintStart_toEndOf="@id/id_forecastDay4"
-        app:layout_constraintEnd_toStartOf="@id/id_forecastTemp4"
-        app:layout_constraintTop_toBottomOf="@id/guideline13"
-        tools:layout_editor_absoluteX="173dp"
-        tools:layout_editor_absoluteY="501dp" />
-
-    <TextView
-        android:id="@+id/id_forecastTemp4"
-        android:layout_width="120dp"
-        android:layout_height="24dp"
-        android:hint="temp"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@id/id_forecastIcon4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline13"
-        app:layout_constraintHorizontal_bias="0.2"
-        tools:layout_editor_absoluteX="275dp"
-        tools:layout_editor_absoluteY="504dp" />
-
-    <TextView
-        android:id="@+id/id_forecastDay5"
-        android:layout_width="120dp"
-        android:layout_height="24dp"
-        android:text="Day5"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/id_forecastIcon5"
-        app:layout_constraintTop_toBottomOf="@id/guideline14"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="504dp" />
-
-    <ImageView
-        android:id="@+id/id_forecastIcon5"
-        android:layout_width="56dp"
-        android:layout_height="27dp"
-        android:padding="10dp"
-        app:layout_constraintStart_toEndOf="@id/id_forecastDay5"
-        app:layout_constraintEnd_toStartOf="@id/id_forecastTemp5"
-        app:layout_constraintTop_toBottomOf="@id/guideline14"
-        tools:layout_editor_absoluteX="173dp"
-        tools:layout_editor_absoluteY="501dp" />
-
-    <TextView
-        android:id="@+id/id_forecastTemp5"
-        android:layout_width="120dp"
-        android:layout_height="24dp"
-        android:hint="temp"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@id/id_forecastIcon5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline14"
-        app:layout_constraintHorizontal_bias="0.2"
-        tools:layout_editor_absoluteX="275dp"
-        tools:layout_editor_absoluteY="504dp" />
+        <EditText
+            android:id="@+id/inputCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name of City"
+            app:layout_constraintBottom_toTopOf="@+id/okBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputUrl" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
