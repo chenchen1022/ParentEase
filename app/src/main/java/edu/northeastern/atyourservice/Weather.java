@@ -1,26 +1,53 @@
 package edu.northeastern.atyourservice;
 
+/**
+ * The class that represents a weather item.
+ *
+ * @author Lin Han
+ * @author Shichang Ye
+ */
 public class Weather {
-    private String temp;
-    private String description;
     private String dateTime;
+    private String temp;
+    private String weatherCondition;
 
-    public Weather(String temp, String description, String dateTime) {
-        this.temp = temp;
-        this.description = description;
+    /**
+     * Constructor of the class.
+     *
+     * @param dateTime         the date and time
+     * @param temp             the temperature
+     * @param weatherCondition the weather condition
+     */
+    public Weather(String dateTime, String temp, String weatherCondition) {
         this.dateTime = dateTime;
+        this.temp = temp;
+        this.weatherCondition = weatherCondition;
     }
 
+    /**
+     * Gets the temperature.
+     *
+     * @return the temperature
+     */
     public String getTemp() {
         return temp;
     }
 
-    public String getDescription() {
-        return description;
+    /**
+     * Gets the weather condition.
+     *
+     * @return the weather condition
+     */
+    public String getWeatherCondition() {
+        return weatherCondition;
     }
 
+    /**
+     * Gets the date and time.
+     *
+     * @return the date and time information
+     */
     public String getDateTime() {
         return dateTime;
     }
-
 }
