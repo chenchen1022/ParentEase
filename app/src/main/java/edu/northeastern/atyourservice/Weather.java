@@ -3,12 +3,12 @@ package edu.northeastern.atyourservice;
 public class Weather {
     private String temp;
     private String description;
-    private String date;
+    private String dateTime;
 
-    public Weather(String temp, String description, String date) {
+    public Weather(String temp, String description, String dateTime) {
         this.temp = temp;
         this.description = description;
-        this.date = date;
+        this.dateTime = dateTime;
     }
 
     public String getTemp() {
@@ -19,8 +19,8 @@ public class Weather {
         return description;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateTime() {
+        return dateTime;
     }
 
 }

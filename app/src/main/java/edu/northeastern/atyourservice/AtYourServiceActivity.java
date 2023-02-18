@@ -137,33 +137,58 @@ public class AtYourServiceActivity extends AppCompatActivity {
                 int tempInt;
                 String description;
                 String date;
+                String time;
+                int timeInt;
+                String dateTime;
 
                 // Get the temp, date, description
                 // Store in weather class
                 // add into arraylist
                 for(int i = 0; i < weatherDataArray.length();i++) {
                     JSONObject innerObj = weatherDataArray.getJSONObject(i);
+                    // get temp
                     JSONObject tempObj = innerObj.getJSONObject("main");
                     temp = tempObj.getString("temp");
                     tempInt = Double.valueOf(Double.valueOf(temp) - 273.15).intValue();
-                    temp = Integer.toString(tempInt) + " ℃";
+                    temp = Integer.toString(tempInt) + "º";
+                    // get description
                     JSONArray weatherArray = innerObj.getJSONArray("weather");
                     JSONObject weatherInnerObj = weatherArray.getJSONObject(0);
                     description = weatherInnerObj.getString("description");
+                    // get date
                     date = innerObj.getString("dt_txt");
-                    date = date.substring(0, 9);
-
-                    if (i % 8 == 0) {
-                        Weather weather = new Weather(temp, description, date);
-                        weatherList.add(weather);
-                        System.out.println(temp);
-                        System.out.println(description);
-                        System.out.println(date);
-                        System.out.println("_________________________________");
+                    time = date.substring(11, 13);
+                    date = date.substring(0, 10);
+                    // get time + AM or PM
+                    timeInt = Integer.parseInt(time);
+                    if (timeInt < 12) {
+                        time = Integer.toString(timeInt) + "AM";
+                    } else {
+                        time = Integer.toString(timeInt) + "PM";
                     }
+                    // get date + time
+                    dateTime = date + " " + time;
+
+
+                    // get every 3 hour in 5 days weather data and add into weather list
+                    Weather weather = new Weather(temp, description, dateTime);
+                    weatherList.add(weather);
+                    // Test for get info
+                    System.out.println(temp);
+                    System.out.println(description);
+                    System.out.println(dateTime);
+                    System.out.println("_________________________________");
 
                 }
 
+                // Test for weather list
+                for (Weather w : weatherList) {
+                    System.out.println("***************Weather List****************");
+                    System.out.println(w.getTemp());
+                    System.out.println(w.getDescription());
+                    System.out.println(w.getDateTime());
+                    System.out.println("************************");
+                }
 
             } catch (IOException | JSONException e) {
                 throw new RuntimeException(e);
