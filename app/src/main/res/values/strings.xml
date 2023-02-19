@@ -2,4 +2,10 @@
     <string name="app_name">AtYourService</string>
     <string name="enter_the_name_of_city">Enter the Name of City</string>
     <string name="temp">temp</string>
+    <string name="search_btn">Search Button</string>
+    <string name="city_name_displayed">City Name</string>
+    <string name="date_time_displayed"><![CDATA[Date & Time]]></string>
+    <string name="temperature_displayed">- °C</string>
+    <string name="weather_condition_displayed">Condition</string>
+    <string name="weather_image_displayed">Weather Image</string>
 </resources>
