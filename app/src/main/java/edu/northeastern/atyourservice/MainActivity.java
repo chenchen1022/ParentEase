@@ -8,6 +8,8 @@ import android.widget.Button;
 
 /**
  * The main activity for the app.
+ *
+ * @author Chen Chen
  */
 public class MainActivity extends AppCompatActivity {
     // Creates buttons for this activity.
