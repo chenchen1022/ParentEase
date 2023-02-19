@@ -4,7 +4,6 @@ package edu.northeastern.atyourservice;
  * The class that represents a weather item.
  *
  * @author Lin Han
- * @author Shichang Ye
  */
 public class Weather {
     private String dateTime;
