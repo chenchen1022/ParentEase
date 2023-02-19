@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +59,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
     private ImageView mWeatherIconImageView;
     private TextView mTempTextView;
     private TextView mWeatherConditionTextView;
+    private ProgressBar progressBar;
     private RecyclerView weatherForecastRecyclerView;
 
     // Components for setting recycler view
@@ -88,12 +91,16 @@ public class AtYourServiceActivity extends AppCompatActivity {
         mWeatherIconImageView = findViewById(R.id.mWeatherIconImageView);
         mTempTextView = findViewById(R.id.mTempTextView);
         mWeatherConditionTextView = findViewById(R.id.mWeatherConditionTextView);
+        progressBar = findViewById(R.id.progressBar);
         weatherForecastRecyclerView = findViewById(R.id.weatherForecastRecyclerView);
 
+        progressBar.setVisibility(View.GONE);
         init(savedInstanceState);
 
         // Sets the click listener for the search button.
         searchBtn.setOnClickListener(view -> {
+            progressBar.setVisibility(View.VISIBLE);
+
             // Sets the city name based on user input.
             city = inputCityTextView.getText().toString().strip();
 
@@ -189,6 +196,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
+                            progressBar.setVisibility(View.GONE);
                             setCurrentWeather();
                             createRecyclerView();
                         }
