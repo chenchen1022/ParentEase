@@ -1,59 +1,18 @@
 package edu.northeastern.atyourservice;
 
-import android.util.Patterns;
-import android.webkit.URLUtil;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentNavigableMap;
 
+/**
+ * A network utility class.
+ *
+ * @Author Shichang Ye
+ */
 public final class NetworkUtil {
-
-    /**
-     * Defines a self-defined exception for when the input url is invalid.
-     */
-    public static class InvalidUrlException extends Exception {
-        /**
-         * Non-argument constructor of the class.
-         */
-        public InvalidUrlException() {
-
-        }
-
-        /**
-         * Constructor of the class.
-         *
-         * @param message the message of the exception
-         */
-        public InvalidUrlException(String message) {
-            super(message);
-        }
-    }
-
-    /**
-     * Validates if the input url is a valid url.
-     *
-     * @param url the input url
-     * @return a url that starts with "https://" or "http://"
-     * @throws InvalidUrlException if the input url is invalid
-     */
-    public static String validInput(String url) throws InvalidUrlException {
-        if (Patterns.WEB_URL.matcher(url).matches() || URLUtil.isValidUrl(url)) {
-            if (url.startsWith("https://") || url.startsWith("http://")) {
-                return url;
-            }
-            return "https://" + url;
-        }
-
-        throw new InvalidUrlException("Invalid url input.");
-    }
-
     /**
      * Converts an input stream to a string.
      *
