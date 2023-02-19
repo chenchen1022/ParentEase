@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,52 +18,50 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
- * The class for the "At Your Service" activity.
+ * The class for the At Your Service activity.
+ *
+ * @author Manping Zhao
+ * @author Chen Chen
+ * @author Lin Han
+ * @author Shichang Ye
  */
 public class AtYourServiceActivity extends AppCompatActivity {
+    // Static final variables for the class.
     private static final String MY_API_KEY = "9d4997d1dc6eae36a7dffd8bad876602";
     private static final String WEATHER_BASE_API_URL = "http://api.openweathermap.org/data/2.5/forecast?";
     private static final String CITY_GEO_INFO_BASE_API_URL = "http://api.openweathermap.org/geo/1.0/direct";
+    private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
+    private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
+    private static final String CITY_NAME = "CITY_NAME";
 
-    // The button the starts the api request.
-    private ImageButton searchBtn;
-
-    // The url for api requests.(we may not need this component since we do not want the user to change the website address)
-    // private EditText inputUrl;
-
-    // The url used to make api requests.
+    // Variables for the class.
+    private Handler handler;
     private static URL url;
-
-    // The text component for inputting the city name.
-    private EditText inputCity;
-
-    // The name of the city.
     private static String city;
-
-    // The array stores json objects representing the weather for the day.
     static JSONArray weatherDataArray;
+    private static ArrayList<Weather> weatherList;
 
-    private static ArrayList<Weather> weatherList = new ArrayList<>();
-
-    //result city name
+    // Components for the activity.
+    private EditText inputCityTextView;
+    private ImageButton searchBtn;
     private TextView mCityTextView;
+    private TextView mdateTimeTextView;
+    private ImageView mWeatherIconImageView;
+    private TextView mTempTextView;
+    private TextView mWeatherConditionTextView;
+    private RecyclerView weatherForecastRecyclerView;
 
-    //result Date and Time
-    private TextView mDtTimeTextView;
-
-    private static TextView id_date_time;
-
-    private RecyclerView forecastRecyclerView;
-    private ForecastAdapter forecastAdapter;
-    private RecyclerView.LayoutManager forecastLayoutManager;
-    private List<WeeklyItems> list;
-
-    private static final String KEY_OF_DAYS = "KEY_OF_DAY";
-    private static final String NUMBER_OF_DAYS = "NUMBER_OF_DAYS";
+    // Components for setting recycler view
+    private WeatherForecastAdapter weatherForecastAdapter;
+    private RecyclerView.LayoutManager weatherForecastLayoutManager;
 
     /**
      * The onCreate method called when the activity is starting.
@@ -75,213 +75,273 @@ public class AtYourServiceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_at_your_service);
+        handler = new Handler();
 
-        list = new ArrayList<>();
+        // Initializes variables.
+        weatherList = new ArrayList<>();
+
+        // Binds widgets to fields.
+        inputCityTextView = findViewById(R.id.inputCityTextView);
+        searchBtn = findViewById(R.id.searchBtn);
+        mCityTextView = findViewById(R.id.mCityTextView);
+        mdateTimeTextView = findViewById(R.id.mdateTimeTextView);
+        mWeatherIconImageView = findViewById(R.id.mWeatherIconImageView);
+        mTempTextView = findViewById(R.id.mTempTextView);
+        mWeatherConditionTextView = findViewById(R.id.mWeatherConditionTextView);
+        weatherForecastRecyclerView = findViewById(R.id.weatherForecastRecyclerView);
+
         init(savedInstanceState);
 
-        searchBtn = findViewById(R.id.searchBtn);
-        inputCity = findViewById(R.id.inputCity);
-
-        id_date_time = findViewById(R.id.id_date_time);
-
-        // Sets the click listener for the searchBtn button.
-        mCityTextView = findViewById(R.id.id_city);
-
-        // Sets the click listener for the okBtn button.
+        // Sets the click listener for the search button.
         searchBtn.setOnClickListener(view -> {
-            // The geological info of the city will be located and used in the CallWebServiceTask.
-            city = inputCity.getText().toString();
+            // Sets the city name based on user input.
+            city = inputCityTextView.getText().toString().strip();
 
-            if (!isValidInput()) {
-                Toast.makeText(getApplicationContext(), "Invalid input.", Toast.LENGTH_LONG).show();
-                System.out.println("here2");
+            if (city.length() <= 0 || containsInvalidChar(city)) {
+                Toast.makeText(AtYourServiceActivity.this, "Not a valid city name.", Toast.LENGTH_LONG).show();
                 return;
             }
 
-            CallWebServiceTask callWebServiceTask = new CallWebServiceTask();
-            callWebServiceTask.start();
-            mCityTextView.setText(city);
-
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            // If the weather list is not empty, the weather objects need to be cleared.
+            if (!weatherList.isEmpty()) {
+                weatherList.clear();
             }
 
-            System.out.println(weatherList.get(0).getDateTime());
+            // Calls the new thread to make requests.
+            CallWebServiceTask callWebServiceTask = new CallWebServiceTask();
+            callWebServiceTask.start();
         });
     }
 
     /**
-     * Checks if the input data (city name, mode[today or future]) from the user is valid.
-     *
-     * @return a boolean
+     * The class for the thread created when clicking the search button in the AtYourServiceActivity.
      */
-    private boolean isValidInput() {
-        if (city == null) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * The class for the thread created when clicking the okBtn button.
-     */
-    static class CallWebServiceTask extends Thread {
+    class CallWebServiceTask extends Thread {
         @Override
         public void run() {
             try {
-                // Makes an api request to get the geological info of the city.
-                // doc: https://openweathermap.org/api/geocoding-api
-                // http://api.openweathermap.org/geo/1.0/direct?q=London&limit=1&appid=9d4997d1dc6eae36a7dffd8bad876602
-                String cityGeoInfoUrlStr = String.format("%s?q=%s&limit=%d&appid=%s", CITY_GEO_INFO_BASE_API_URL, city, 1, MY_API_KEY);
+                // Makes an api request to get the geological info of the city. Api documentation
+                // available at https://openweathermap.org/api/geocoding-api
+                String cityGeoInfoUrlStr = String.format("%s?q=%s&limit=%d&appid=%s",
+                        CITY_GEO_INFO_BASE_API_URL, city, 1, MY_API_KEY);
                 url = new URL(cityGeoInfoUrlStr);
                 String cityGeoInfoResponseStr = NetworkUtil.httpResponse(url);
-                System.out.println(cityGeoInfoResponseStr);
                 JSONArray cityGeoInfoResponseJsonArray = new JSONArray(cityGeoInfoResponseStr);
+
+                // If no such input city can be found, a toast will be shown to the user.
+                if (cityGeoInfoResponseJsonArray == null || cityGeoInfoResponseJsonArray.length() == 0) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(AtYourServiceActivity.this, "Not a valid city name.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
                 JSONObject cityGeoInfo = (JSONObject) cityGeoInfoResponseJsonArray.get(0);
                 double lat = Double.parseDouble(cityGeoInfo.getString("lat"));
                 double lon = Double.parseDouble(cityGeoInfo.getString("lon"));
 
-                // Makes an api request to get the weather data of the city. The returned data contains
-                // 5 day / 3 hour forecast data.
-
-                // doc: https://openweathermap.org/forecast5
-                // api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&appid={API key}
+                // Makes an api request to get the weather data of the city. The returned data
+                // contains 5 day / 3 hour weather forecast data. Api documentation available at:
+                // https://openweathermap.org/forecast5
                 String weatherDataUrlStr = String.format("%slat=%f&lon=%f&appid=%s", WEATHER_BASE_API_URL, lat, lon, MY_API_KEY);
                 url = new URL(weatherDataUrlStr);
                 String weatherDataResponse = NetworkUtil.httpResponse(url);
 
-                // Creates a json object based on the stringed json data.
+                // Creates a json object based on the stringified json data.
                 JSONObject jsonObject = new JSONObject(weatherDataResponse);
 
                 // Parses the json object and gets the corresponding json array.
-                // *** This weatherDataArray has all the weather data. Check the console.
                 weatherDataArray = jsonObject.getJSONArray("list");
-//                System.out.println(weatherDataArray);
 
-                String temp;
-                int tempInt;
-                String description;
-                String date;
-                String time;
-                int timeInt;
-                String dateTime;
+                // Gets information from the weatherDataArray, creates weather objects, and stores
+                // the objects in the weatherList.
+                for (int i = 0; i < weatherDataArray.length(); i++) {
+                    JSONObject curObj = weatherDataArray.getJSONObject(i);
 
-                // Get the temp, date, description
-                // Store in weather class
-                // add into arraylist
-                for(int i = 0; i < weatherDataArray.length(); i++) {
-                    JSONObject innerObj = weatherDataArray.getJSONObject(i);
-                    // get temp
-                    JSONObject tempObj = innerObj.getJSONObject("main");
-                    temp = tempObj.getString("temp");
-                    tempInt = Double.valueOf(Double.valueOf(temp) - 273.15).intValue();
-                    temp = Integer.toString(tempInt) + "º";
-                    // get description
-                    JSONArray weatherArray = innerObj.getJSONArray("weather");
-                    JSONObject weatherInnerObj = weatherArray.getJSONObject(0);
-                    description = weatherInnerObj.getString("description");
-                    // get date
-                    date = innerObj.getString("dt_txt");
-                    time = date.substring(11, 13);
-                    date = date.substring(0, 10);
-                    // get time + AM or PM
-                    timeInt = Integer.parseInt(time);
-                    if (timeInt < 12) {
-                        time = Integer.toString(timeInt) + "AM";
-                    } else {
-                        time = Integer.toString(timeInt) + "PM";
-                    }
-                    // get date + time
-                    dateTime = date + " " + time;
+                    // Gets the date and time.
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    String parsedDateTimeStr = curObj.getString("dt_txt");
+                    Date parsedDate = simpleDateFormat.parse(parsedDateTimeStr);
+                    simpleDateFormat.setTimeZone(TimeZone.getDefault());
+                    simpleDateFormat.applyPattern("yyyy-MMM-dd HH:mm:ss");
 
-                    // get every 3 hour in 5 days weather data and add into weather list
-                    Weather weather = new Weather(temp, description, dateTime);
+                    assert parsedDate != null;
+                    String resultDateTime = simpleDateFormat.format(parsedDate).substring(5, 17).replace('-', ' ');
+
+                    // Gets the temperature.
+                    JSONObject tempObj = curObj.getJSONObject("main");
+                    String tempStr = tempObj.getString("temp");
+                    int tempInt = Double.valueOf(Double.valueOf(tempStr) - 273.15).intValue();
+                    String temp = Integer.toString(tempInt) + " ºC";
+
+                    // Gets the weather condition.
+                    JSONObject weatherObject = (JSONObject) curObj.getJSONArray("weather").get(0);
+                    String weatherCondition = weatherObject.getString("main");
+
+                    // Creates and adds weather objects into the weather list.
+                    Weather weather = new Weather(resultDateTime, temp, weatherCondition);
                     weatherList.add(weather);
-                    // Test for get info
-                    System.out.println(temp);
-                    System.out.println(description);
-                    System.out.println(dateTime);
-                    System.out.println("_________________________________");
 
+                    // Sets the weather information for components except the recycler view.
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            setCurrentWeather();
+                            createRecyclerView();
+                        }
+                    });
                 }
-
-                // Test for weather list
-                for (Weather w : weatherList) {
-                    System.out.println("***************Weather List****************");
-                    System.out.println(w.getTemp());
-                    System.out.println(w.getDescription());
-                    System.out.println(w.getDateTime());
-                    System.out.println("************************");
-                }
-
-                id_date_time.setText(weatherList.get(0).getTemp());
-
-            } catch (IOException | JSONException e) {
-                throw new RuntimeException(e);
+            } catch (IOException | JSONException | ParseException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    /* Manping Zhao
+    /**
+     * Saves data in Bundle instance when the screen orientation is changed.
+     *
+     * @param outState the bundle instance to be saved
      */
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        int size = list == null ? 0 : list.size();
-        outState.putInt(NUMBER_OF_DAYS, size);
-        for (int i = 0; i < size; i++) {
-            outState.putString(KEY_OF_DAYS + i + "0", list.get(i).getDay());
-            outState.putString(KEY_OF_DAYS + i + "1", list.get(i).getTemp());
-            outState.putString(KEY_OF_DAYS + i + "0", list.get(i).getDesc());
+        if (weatherList == null || weatherList.size() == 0) {
+            return;
         }
+
+        int size = weatherList.size();
+        outState.putInt(NUMBER_OF_ITEMS, size);
+        outState.putString(CITY_NAME, city);
+
+        for (int i = 0; i < size; i++) {
+            outState.putString(KEY_OF_INSTANCE + i + "0", weatherList.get(i).getDateTime());
+            outState.putString(KEY_OF_INSTANCE + i + "1", weatherList.get(i).getTemp());
+            outState.putString(KEY_OF_INSTANCE + i + "2", weatherList.get(i).getWeatherCondition());
+        }
+
         super.onSaveInstanceState(outState);
     }
 
-    /* Manping Zhao
+    /**
+     * Initialization of the saved state.
      */
-
     private void init(Bundle savedInstanceState) {
-        initialItemData(savedInstanceState);
-        createRecyclerView();
+        if (savedInstanceState != null) {
+            initialItemData(savedInstanceState);
+            setCurrentWeather();
+            createRecyclerView();
+        }
     }
 
-    /*
-    Manping Zhao
+    /**
+     * Initializes the data in the Bundle instance if it is not empty.
+     *
+     * @param savedInstanceState the Bundle instance
      */
     private void initialItemData(Bundle savedInstanceState) {
-        if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_DAYS)) {
-            if (list == null || list.size() == 0) {
+        if (savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
+            if (weatherList == null || weatherList.size() == 0) {
+                int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
 
-                int size = savedInstanceState.getInt(NUMBER_OF_DAYS);
-
-                // Retrieve keys we stored in the instance
+                // Retrieves weather objects stored in the state.
                 for (int i = 0; i < size; i++) {
-                    String dayName = savedInstanceState.getString(KEY_OF_DAYS + i + "0");
-                    String dayTemp = savedInstanceState.getString(KEY_OF_DAYS + i + "1");
-                    String dayDesc = savedInstanceState.getString(KEY_OF_DAYS + i + "2");
-                    WeeklyItems weeklyItems = new WeeklyItems(dayName, dayTemp, dayDesc);
-                    list.add(weeklyItems);
+                    String dateTime = savedInstanceState.getString(KEY_OF_INSTANCE + i + "0");
+                    String temp = savedInstanceState.getString(KEY_OF_INSTANCE + i + "1");
+                    String weatherCondition = savedInstanceState.getString(KEY_OF_INSTANCE + i + "2");
+                    Weather weather = new Weather(dateTime, temp, weatherCondition);
+                    weatherList.add(weather);
                 }
             }
         }
     }
 
-    /*
-    Manping Zhao
+    /**
+     * Creates the recycler view.
      */
     private void createRecyclerView() {
-        forecastRecyclerView = findViewById(R.id.recyclerView);
-        forecastLayoutManager = new LinearLayoutManager(this);
-        forecastAdapter = new ForecastAdapter(list);
+        weatherForecastRecyclerView = findViewById(R.id.weatherForecastRecyclerView);
+        weatherForecastLayoutManager = new LinearLayoutManager(this);
+        weatherForecastAdapter = new WeatherForecastAdapter(weatherList);
 
-        forecastRecyclerView.setHasFixedSize(true);
-        forecastRecyclerView.setLayoutManager(forecastLayoutManager);
-
-        forecastRecyclerView.setAdapter(forecastAdapter);
-        forecastRecyclerView.setItemAnimator(null);
+        weatherForecastRecyclerView.setHasFixedSize(true);
+        weatherForecastRecyclerView.setLayoutManager(weatherForecastLayoutManager);
+        weatherForecastRecyclerView.setAdapter(weatherForecastAdapter);
+        weatherForecastRecyclerView.setItemAnimator(null);
     }
 
-}
+    /**
+     * A helper function that returns if the given string contains any invalid character.
+     *
+     * @param str the string to be checked
+     * @return true if the string contains an invalid character, or false otherwise
+     */
+    private boolean containsInvalidChar(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            char cur = str.charAt(i);
+            if (!Character.isLetter(cur)) {
+                return true;
+            }
+        }
 
+        return false;
+    }
+
+    /**
+     * Gets the weather icon based on the weather condition.
+     *
+     * @param weatherCondition the weather condition
+     * @return the icon resource id
+     */
+    private int getWeatherIcon(String weatherCondition) {
+        int resId = R.drawable.weather_icon_clear;
+
+        switch (weatherCondition) {
+            case "Clouds":
+                resId = R.drawable.weather_icon_clouds;
+                break;
+            case "Smog":
+                resId = R.drawable.weather_icon_smog;
+                break;
+            case "Drizzle":
+                resId = R.drawable.weather_icon_drizzle;
+                break;
+            case "Rain":
+                resId = R.drawable.weather_icon_rain;
+                break;
+            case "Snow":
+                resId = R.drawable.weather_icon_snow;
+                break;
+            case "Thunderstorm":
+                resId = R.drawable.weather_icon_thunderstorm;
+                break;
+            default:
+        }
+
+        return resId;
+    }
+
+    /**
+     * A helper functions that sets the current weather for components above the recycler view.
+     */
+    private void setCurrentWeather() {
+        if (weatherList == null || weatherList.size() == 0) {
+            return;
+        }
+        Weather latestWeather = weatherList.get(0);
+        mCityTextView.setText(city);
+
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+        String currentTimeStr = simpleDateFormat.format(date);
+        mdateTimeTextView.setText(currentTimeStr.substring(5, 17).replace('-', ' '));
+
+        mTempTextView.setText(latestWeather.getTemp());
+        mWeatherConditionTextView.setText(latestWeather.getWeatherCondition());
+
+        int resId = getWeatherIcon(latestWeather.getWeatherCondition());
+        mWeatherIconImageView.setImageResource(resId);
+    }
+}
