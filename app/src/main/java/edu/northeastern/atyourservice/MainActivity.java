@@ -14,6 +14,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
     // Creates buttons for this activity.
     Button atYourServiceBtn;
+    Button aboutBtn;
 
     /**
      * The onCreate method called when the activity is starting.
@@ -36,5 +37,15 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, AtYourServiceActivity.class);
             startActivity(intent);
         });
+
+        aboutBtn = findViewById(R.id.aboutBtn);
+
+        // Sets the click listener for the About button
+
+        aboutBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(intent);
+        });
+
     }
 }
