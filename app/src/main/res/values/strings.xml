@@ -8,4 +8,12 @@
     <string name="temperature_displayed">- °C</string>
     <string name="weather_condition_displayed">Condition</string>
     <string name="weather_image_displayed">Weather Image</string>
+    <string name="group_18">Group 18</string>
+    <string name="shichang_ye">Shichang Ye</string>
+    <string name="manping_zhao">Manping Zhao</string>
+    <string name="chen_chen">Chen Chen</string>
+    <string name="lin_han">Lin Han</string>
+    <string name="at_your_service">At Your Service</string>
+    <string name="firebase_database">Firebase Database</string>
+    <string name="about">About</string>
 </resources>

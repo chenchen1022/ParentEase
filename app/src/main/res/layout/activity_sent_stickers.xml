@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SentStickersActivity">
+
+    <ImageView
+        android:id="@+id/weather_icon_clear"
+        android:layout_width="131dp"
+        android:layout_height="92dp"
+        app:srcCompat="@drawable/weather_icon_clear"
+        tools:layout_editor_absoluteX="43dp"
+        tools:layout_editor_absoluteY="90dp" />
+
+    <TextView
+        android:id="@+id/weather_icon_clear_sent_times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sent times: "
+        tools:layout_editor_absoluteX="74dp"
+        tools:layout_editor_absoluteY="192dp" />
+
+    <ImageView
+        android:id="@+id/weather_icon_clouds"
+        android:layout_width="131dp"
+        android:layout_height="92dp"
+        app:srcCompat="@drawable/weather_icon_clouds"
+        tools:layout_editor_absoluteX="238dp"
+        tools:layout_editor_absoluteY="90dp" />
+
+    <TextView
+        android:id="@+id/weather_icon_clouds_sent_times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sent times: "
+        tools:layout_editor_absoluteX="259dp"
+        tools:layout_editor_absoluteY="192dp" />
+
+    <ImageView
+        android:id="@+id/weather_icon_rainbow"
+        android:layout_width="131dp"
+        android:layout_height="92dp"
+        app:srcCompat="@drawable/weather_icon_rainbow"
+        tools:layout_editor_absoluteX="43dp"
+        tools:layout_editor_absoluteY="356dp" />
+
+    <ImageView
+        android:id="@+id/weather_icon_snow"
+        android:layout_width="131dp"
+        android:layout_height="92dp"
+        app:srcCompat="@drawable/weather_icon_snow"
+        tools:layout_editor_absoluteX="43dp"
+        tools:layout_editor_absoluteY="494dp" />
+
+    <ImageView
+        android:id="@+id/weather_icon_bolt"
+        android:layout_width="131dp"
+        android:layout_height="92dp"
+        app:srcCompat="@drawable/weather_icon_bolt"
+        tools:layout_editor_absoluteX="235dp"
+        tools:layout_editor_absoluteY="494dp" />
+
+    <TextView
+        android:id="@+id/weather_icon_smog_sent_times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sent times: "
+        tools:layout_editor_absoluteX="260dp"
+        tools:layout_editor_absoluteY="459dp" />
+
+    <ImageView
+        android:id="@+id/weather_icon_drizzle"
+        android:layout_width="131dp"
+        android:layout_height="92dp"
+        app:srcCompat="@drawable/weather_icon_drizzle"
+        tools:layout_editor_absoluteX="235dp"
+        tools:layout_editor_absoluteY="224dp" />
+
+    <TextView
+        android:id="@+id/weather_icon_drizzle_sent_times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sent times: "
+        tools:layout_editor_absoluteX="74dp"
+        tools:layout_editor_absoluteY="326dp" />
+
+    <TextView
+        android:id="@+id/weather_icon_snow_sent_times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sent times: "
+        tools:layout_editor_absoluteX="74dp"
+        tools:layout_editor_absoluteY="595dp" />
+
+    <ImageView
+        android:id="@+id/weather_icon_rain"
+        android:layout_width="131dp"
+        android:layout_height="92dp"
+        app:srcCompat="@drawable/weather_icon_rain"
+        tools:layout_editor_absoluteX="43dp"
+        tools:layout_editor_absoluteY="224dp" />
+
+    <ImageView
+        android:id="@+id/weather_icon_smog"
+        android:layout_width="131dp"
+        android:layout_height="92dp"
+        app:srcCompat="@drawable/weather_icon_smog"
+        tools:layout_editor_absoluteX="235dp"
+        tools:layout_editor_absoluteY="356dp" />
+
+    <TextView
+        android:id="@+id/weather_icon_rain_sent_times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sent times: "
+        tools:layout_editor_absoluteX="264dp"
+        tools:layout_editor_absoluteY="326dp" />
+
+    <TextView
+        android:id="@+id/weather_icon_bolt_sent_times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sent times: "
+        tools:layout_editor_absoluteX="260dp"
+        tools:layout_editor_absoluteY="595dp" />
+
+    <TextView
+        android:id="@+id/weather_icon_rainbow_sent_times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sent times: "
+        tools:layout_editor_absoluteX="74dp"
+        tools:layout_editor_absoluteY="459dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="74dp"
+        tools:layout_editor_absoluteY="653dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="259dp"
+        tools:layout_editor_absoluteY="653dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
