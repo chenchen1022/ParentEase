@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/receviedStickers"
+            android:layout_width="35sp"
+            android:layout_height="35sp"
+            app:srcCompat="@drawable/weather_icon_clouds"
+            tools:layout_editor_absoluteX="34dp"
+            tools:layout_editor_absoluteY="9dp" />
+
+        <TextView
+            android:id="@+id/sendTimes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send time"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="269dp"
+            tools:layout_editor_absoluteY="13dp" />
+
+        <TextView
+            android:id="@+id/fromUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="from"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="166dp"
+            tools:layout_editor_absoluteY="13dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
