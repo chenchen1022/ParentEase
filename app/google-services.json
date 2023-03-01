@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1070385384871",
+    "firebase_url": "https://parent-ease-default-rtdb.firebaseio.com",
+    "project_id": "parent-ease",
+    "storage_bucket": "parent-ease.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070385384871:android:351ada5c959dd357b4fa82",
+        "android_client_info": {
+          "package_name": "edu.northeastern.atyourservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070385384871-ep785veum72q6btapaol0hvnnp78m6fn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZalbOqaSl-pK8kqtXJkLO1C6gH4Nlyf8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070385384871-ep785veum72q6btapaol0hvnnp78m6fn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
