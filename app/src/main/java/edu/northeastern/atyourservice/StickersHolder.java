@@ -1,0 +1,31 @@
+package edu.northeastern.atyourservice;
+
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+/**
+ * The view holder class for the stickers recycler view.
+ *
+ * @author Manping Zhao
+ */
+
+public class StickersHolder extends RecyclerView.ViewHolder {
+    public TextView fromUser;
+    public TextView sendTime;
+    public ImageView receivedStickers;
+
+    public StickersHolder(@NonNull View itemView) {
+        super(itemView);
+        this.fromUser = itemView.findViewById(R.id.fromUser);
+        this.sendTime = itemView.findViewById(R.id.sendTimes);
+        this.receivedStickers = itemView.findViewById(R.id.receviedStickers);
+    }
+
+
+
+
+}
