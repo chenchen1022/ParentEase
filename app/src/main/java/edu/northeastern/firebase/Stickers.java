@@ -1,4 +1,4 @@
-package edu.northeastern.atyourservice;
+package edu.northeastern.firebase;
 
 public class Stickers implements Comparable<Stickers>{
     public String fromUser;

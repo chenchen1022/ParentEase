@@ -1,4 +1,4 @@
-package edu.northeastern.atyourservice;
+package edu.northeastern.firebase;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -6,6 +6,10 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import edu.northeastern.atyourservice.R;
+import edu.northeastern.firebase.Stickers;
+import edu.northeastern.firebase.StickersHolder;
 
 /**
  * The adaptor for the stickers recycler view.

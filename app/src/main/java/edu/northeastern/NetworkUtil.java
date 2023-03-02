@@ -1,4 +1,4 @@
-package edu.northeastern.atyourservice;
+package edu.northeastern;
 
 import java.io.BufferedReader;
 import java.io.IOException;

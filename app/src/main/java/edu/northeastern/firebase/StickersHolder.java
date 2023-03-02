@@ -1,4 +1,4 @@
-package edu.northeastern.atyourservice;
+package edu.northeastern.firebase;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import edu.northeastern.atyourservice.R;
 
 /**
  * The view holder class for the stickers recycler view.

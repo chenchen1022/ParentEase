@@ -1,8 +1,10 @@
-package edu.northeastern.atyourservice;
+package edu.northeastern.firebase;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import edu.northeastern.atyourservice.R;
 
 public class SentStickersActivity extends AppCompatActivity {
 

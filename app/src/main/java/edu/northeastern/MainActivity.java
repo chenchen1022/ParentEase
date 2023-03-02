@@ -1,10 +1,15 @@
-package edu.northeastern.atyourservice;
+package edu.northeastern;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+
+import edu.northeastern.atyourservice.AtYourServiceActivity;
+import edu.northeastern.atyourservice.R;
+import edu.northeastern.firebase.AboutActivity;
+import edu.northeastern.firebase.RegisterActivity;
 
 /**
  * The main activity for the app.
