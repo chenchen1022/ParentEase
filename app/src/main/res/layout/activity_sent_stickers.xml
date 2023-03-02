@@ -8,131 +8,169 @@
 
     <ImageView
         android:id="@+id/weather_icon_clear"
-        android:layout_width="131dp"
-        android:layout_height="92dp"
-        app:srcCompat="@drawable/weather_icon_clear"
-        tools:layout_editor_absoluteX="43dp"
-        tools:layout_editor_absoluteY="90dp" />
+        android:layout_width="72dp"
+        android:layout_height="55dp"
+        app:layout_constraintEnd_toStartOf="@id/weather_icon_clouds"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline13"
+        app:srcCompat="@drawable/weather_icon_clear" />
 
     <TextView
         android:id="@+id/weather_icon_clear_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sent times: "
-        tools:layout_editor_absoluteX="74dp"
-        tools:layout_editor_absoluteY="192dp" />
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_clear"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/weather_icon_clouds_sent_times"
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <ImageView
         android:id="@+id/weather_icon_clouds"
-        android:layout_width="131dp"
-        android:layout_height="92dp"
-        app:srcCompat="@drawable/weather_icon_clouds"
-        tools:layout_editor_absoluteX="238dp"
-        tools:layout_editor_absoluteY="90dp" />
+        android:layout_width="72dp"
+        android:layout_height="55dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/weather_icon_clear"
+        app:layout_constraintTop_toBottomOf="@id/guideline13"
+        app:srcCompat="@drawable/weather_icon_clouds" />
 
     <TextView
         android:id="@+id/weather_icon_clouds_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sent times: "
-        tools:layout_editor_absoluteX="259dp"
-        tools:layout_editor_absoluteY="192dp" />
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_clouds"
+        app:layout_constraintStart_toEndOf="@id/weather_icon_clear_sent_times"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <ImageView
         android:id="@+id/weather_icon_rainbow"
-        android:layout_width="131dp"
-        android:layout_height="92dp"
+        android:layout_width="72dp"
+        android:layout_height="55dp"
         app:srcCompat="@drawable/weather_icon_rainbow"
-        tools:layout_editor_absoluteX="43dp"
-        tools:layout_editor_absoluteY="356dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_rain_sent_times"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/weather_icon_smog"
+        android:layout_marginTop="8dp" />
 
     <ImageView
         android:id="@+id/weather_icon_snow"
-        android:layout_width="131dp"
-        android:layout_height="92dp"
+        android:layout_width="72dp"
+        android:layout_height="55dp"
         app:srcCompat="@drawable/weather_icon_snow"
-        tools:layout_editor_absoluteX="43dp"
-        tools:layout_editor_absoluteY="494dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_rainbow_sent_times"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/weather_icon_bolt" />
 
     <ImageView
         android:id="@+id/weather_icon_bolt"
-        android:layout_width="131dp"
-        android:layout_height="92dp"
+        android:layout_width="72dp"
+        android:layout_height="55dp"
         app:srcCompat="@drawable/weather_icon_bolt"
-        tools:layout_editor_absoluteX="235dp"
-        tools:layout_editor_absoluteY="494dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_smog_sent_times"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@id/weather_icon_snow"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/weather_icon_smog_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sent times: "
-        tools:layout_editor_absoluteX="260dp"
-        tools:layout_editor_absoluteY="459dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_smog"
+        app:layout_constraintStart_toEndOf="@id/weather_icon_rainbow_sent_times"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/weather_icon_drizzle"
-        android:layout_width="131dp"
-        android:layout_height="92dp"
+        android:layout_width="72dp"
+        android:layout_height="55dp"
         app:srcCompat="@drawable/weather_icon_drizzle"
-        tools:layout_editor_absoluteX="235dp"
-        tools:layout_editor_absoluteY="224dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_clouds_sent_times"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@id/weather_icon_rain"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/weather_icon_drizzle_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sent times: "
-        tools:layout_editor_absoluteX="74dp"
-        tools:layout_editor_absoluteY="326dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_drizzle"
+        app:layout_constraintStart_toEndOf="@id/weather_icon_rain_sent_times"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/weather_icon_snow_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sent times: "
-        tools:layout_editor_absoluteX="74dp"
-        tools:layout_editor_absoluteY="595dp" />
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_snow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@id/weather_icon_bolt_sent_times" />
 
     <ImageView
         android:id="@+id/weather_icon_rain"
-        android:layout_width="131dp"
-        android:layout_height="92dp"
+        android:layout_width="72dp"
+        android:layout_height="55dp"
         app:srcCompat="@drawable/weather_icon_rain"
-        tools:layout_editor_absoluteX="43dp"
-        tools:layout_editor_absoluteY="224dp" />
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_clear_sent_times"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@id/weather_icon_drizzle"
+        android:layout_marginTop="8dp" />
 
     <ImageView
         android:id="@+id/weather_icon_smog"
-        android:layout_width="131dp"
-        android:layout_height="92dp"
+        android:layout_width="72dp"
+        android:layout_height="55dp"
         app:srcCompat="@drawable/weather_icon_smog"
-        tools:layout_editor_absoluteX="235dp"
-        tools:layout_editor_absoluteY="356dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/weather_icon_rainbow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_drizzle_sent_times"
+        android:layout_marginTop="8dp" />
 
     <TextView
         android:id="@+id/weather_icon_rain_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sent times: "
-        tools:layout_editor_absoluteX="264dp"
-        tools:layout_editor_absoluteY="326dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_rain"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/weather_icon_drizzle_sent_times" />
 
     <TextView
         android:id="@+id/weather_icon_bolt_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sent times: "
-        tools:layout_editor_absoluteX="260dp"
-        tools:layout_editor_absoluteY="595dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_bolt"
+        app:layout_constraintStart_toEndOf="@id/weather_icon_snow_sent_times"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/weather_icon_rainbow_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sent times: "
-        tools:layout_editor_absoluteX="74dp"
-        tools:layout_editor_absoluteY="459dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_rainbow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/weather_icon_smog_sent_times" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline13"
@@ -146,21 +184,64 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.88" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="74dp"
-        tools:layout_editor_absoluteY="653dp" />
+        android:text="Submit"
+        android:layout_marginStart="26dp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/guideline14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_sentHistory" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btn_sentHistory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="259dp"
-        tools:layout_editor_absoluteY="653dp" />
+        android:text="Sent History"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/guideline14"
+        app:layout_constraintStart_toEndOf="@id/btn_submit"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/myUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My username: "
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/sendTo"
+         />
+
+    <TextView
+        android:id="@+id/sendTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send to"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline13"
+        app:layout_constraintStart_toEndOf="@id/myUsername"
+        app:layout_constraintEnd_toStartOf="@id/spinnerUsers" />
+
+    <Spinner
+        android:id="@+id/spinnerUsers"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toTopOf="@id/guideline13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/sendTo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
