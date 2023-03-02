@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     // Creates buttons for this activity.
     Button atYourServiceBtn;
     Button aboutBtn;
+    Button stickItToEmBtn;
 
     /**
      * The onCreate method called when the activity is starting.
@@ -44,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
 
         aboutBtn.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(intent);
+        });
+
+        stickItToEmBtn = findViewById(R.id.databaseBtn);
+
+        // Sets the click listener for the About button
+
+        stickItToEmBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
 
