@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 
+import edu.northeastern.MainActivity;
 import edu.northeastern.atyourservice.R;
 
 /**
@@ -38,6 +40,7 @@ public class SentStickersActivity extends AppCompatActivity {
     private TextView tv_myUserName;
     private String userName;
     private Spinner userListSpinner;
+    private Button btn_sentHistory;
 
     DatabaseReference myDB = FirebaseDatabase.getInstance().getReference();
     ArrayList<String> spinnerList = new ArrayList<>(); //holds all users available to send stikcer to
@@ -67,14 +70,22 @@ public class SentStickersActivity extends AppCompatActivity {
         tv_myUserName = findViewById(R.id.myUsername);
         tv_myUserName.setText("My username: " + userName);
         userListSpinner = findViewById(R.id.spinnerUsers);
+        btn_sentHistory = findViewById(R.id.btn_sentHistory);
 
-        //TODO: drop downlist should connect to the database
-        //Link to the database and get all users
-        spinnerList.add("...");
-        Showdata();
+        //get user list for the spinner View
+        spinnerShowData();
+
+        //When click sent history, go to sentHistory Activity
+        btn_sentHistory.setOnClickListener(view -> {
+            Intent intent = new Intent(SentStickersActivity.this, StickersCollectedHistory.class);
+            startActivity(intent);
+        });
     }
 
-    private void Showdata() {
+    /**
+     * Get a list of users from DB and show in the spiner view
+     */
+    private void spinnerShowData() {
         myDB.child("User").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
