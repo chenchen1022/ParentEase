@@ -16,4 +16,7 @@
     <string name="at_your_service">At Your Service</string>
     <string name="firebase_database">Stick It to \'Em</string>
     <string name="about">About</string>
+    <string name="channel_name">group_18_stick_it_to_em_channel_name</string>
+    <string name="channel_description">group_18_stick_it_to_em_channel_description</string>
+    <string name="channel_id">group_18_stick_it_to_em_channel_id</string>
 </resources>
