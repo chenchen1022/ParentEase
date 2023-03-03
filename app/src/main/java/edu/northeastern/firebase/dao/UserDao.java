@@ -36,14 +36,4 @@ public class UserDao {
         Objects.requireNonNull(user);
         return databaseReference.child("users").child(user.getUserToken()).setValue(user);
     }
-
-    /**
-     * Add a user in the database.
-     *
-     * @param user the user to be added
-     * @return a task
-     */
-    public Task <Void> add(User user){
-        return databaseReference.push().setValue(user);
-    }
 }

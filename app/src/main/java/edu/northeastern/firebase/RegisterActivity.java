@@ -73,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
             User user = new User(CLIENT_REGISTRATION_TOKEN, userName);
 
             // Call the create method from userdao to create the new user. --> CC: should be add not create
-            userDao.add(user).addOnSuccessListener(result -> {
+            userDao.create(user).addOnSuccessListener(result -> {
                 Toast.makeText(this, "Registered successfully.", Toast.LENGTH_SHORT).show();
             }).addOnFailureListener(result -> {
                 Toast.makeText(this, result.getMessage(), Toast.LENGTH_LONG).show();
