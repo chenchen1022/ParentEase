@@ -7,7 +7,15 @@ import android.app.NotificationManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 import edu.northeastern.atyourservice.R;
 
@@ -21,6 +29,10 @@ import edu.northeastern.atyourservice.R;
 public class SentStickersActivity extends AppCompatActivity {
     private TextView tv_myUserName;
     private String userName;
+    private Spinner userListSpinner;
+    DatabaseReference spinnerRef;
+    ArrayList<String> spinnerList;
+    ArrayAdapter<String> adapter;
 
     /**
      * The onCreate method called when the activity is starting.
@@ -45,6 +57,16 @@ public class SentStickersActivity extends AppCompatActivity {
         //set up UI elements
         tv_myUserName = findViewById(R.id.myUsername);
         tv_myUserName.setText("My username: " + userName);
+
+        //TODO: drop downlist should connect to the database
+        userListSpinner = findViewById(R.id.spinnerUsers);
+        spinnerRef = FirebaseDatabase.getInstance().getReference("User");
+
+        spinnerList = new ArrayList<>();
+        adapter = new ArrayAdapter<String>(SentStickersActivity.this, android.R.layout.simple_spinner_dropdown_item);
+
+
+
 
     }
 
