@@ -16,6 +16,7 @@ import edu.northeastern.firebase.RegisterActivity;
  *
  * @author Chen Chen
  * @author Shichang Ye
+ * @author Lin Han
  */
 public class MainActivity extends AppCompatActivity {
     // Creates buttons for this activity.

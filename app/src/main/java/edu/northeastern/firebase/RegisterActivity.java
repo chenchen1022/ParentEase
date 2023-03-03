@@ -17,6 +17,8 @@ import edu.northeastern.firebase.entity.User;
 
 /**
  * The register activity class that helps register a user.
+ *
+ * @author ShiChang Ye
  */
 public class RegisterActivity extends AppCompatActivity {
     private static String CLIENT_REGISTRATION_TOKEN;
@@ -70,8 +72,8 @@ public class RegisterActivity extends AppCompatActivity {
             CLIENT_REGISTRATION_TOKEN = task.getResult();
             User user = new User(CLIENT_REGISTRATION_TOKEN, userName);
 
-            // Call the create method from userdao to create the new user.
-            userDao.create(user).addOnSuccessListener(result -> {
+            // Call the create method from userdao to create the new user. --> CC: should be add not create
+            userDao.add(user).addOnSuccessListener(result -> {
                 Toast.makeText(this, "Registered successfully.", Toast.LENGTH_SHORT).show();
             }).addOnFailureListener(result -> {
                 Toast.makeText(this, result.getMessage(), Toast.LENGTH_LONG).show();

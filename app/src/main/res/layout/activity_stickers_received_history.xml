@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/receviedStickers"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/fromUser"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fromUser"
+        app:layout_constraintVertical_bias="0.023"
+        app:srcCompat="@drawable/weather_icon_clouds" />
+
+    <TextView
+        android:id="@+id/sendTimes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send time"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/receivedStickersRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/fromUser"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.035" />
+
+    <TextView
+        android:id="@+id/fromUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="from"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/receivedStickersRecyclerView"
+        app:layout_constraintEnd_toStartOf="@id/sendTimes"
+        app:layout_constraintStart_toEndOf="@id/receviedStickers"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.034" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/receivedStickersRecyclerView"
+        android:layout_width="410dp"
+        android:layout_height="827dp"
+        app:layout_constraintTop_toBottomOf="@id/receviedStickers"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

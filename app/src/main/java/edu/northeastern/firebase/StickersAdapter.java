@@ -19,16 +19,36 @@ import edu.northeastern.firebase.StickersHolder;
 public class StickersAdapter extends RecyclerView.Adapter<StickersHolder> {
     private List<Stickers> stickersList;
 
+    /**
+     * Constructor for the class.
+     *
+     * @param stickers the sticker list
+     */
     public StickersAdapter(List<Stickers> stickers) {
         this.stickersList = stickers;
     }
 
+    /**
+     * Called when the submit button is pressed.
+     *
+     * @param parent   The ViewGroup into which the new View will be added after it is bound to
+     *                 an adapter position.
+     * @param viewType The view type of the new View.
+     * @return a new stickerHolder
+     */
     @Override
     public StickersHolder onCreateViewHolder(ViewGroup parent, int viewType){
         return new StickersHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.history_item, parent,false));
     }
 
+    /**
+     * Binds data from the sticker list to the view holders.
+     *
+     * @param holder   The ViewHolder which should be updated to represent the contents of the
+     *                 item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
+     */
     @Override
     public void onBindViewHolder(StickersHolder holder,int position) {
         Stickers currentItem = stickersList.get(position);
@@ -40,11 +60,22 @@ public class StickersAdapter extends RecyclerView.Adapter<StickersHolder> {
         holder.receivedStickers.setImageResource(resId);
     }
 
+    /**
+     * Gets the size of the sticker list.
+     *
+     * @return the size of the sticker list
+     */
     @Override
     public int getItemCount() {
         return stickersList.size();
     }
 
+    /**
+     * Gets the sticker icon based on the sticker description.
+     *
+     * @param stickerDesc the sticker description
+     * @return the icon resource id
+     */
     private int getStickerIcon(String stickerDesc) {
         int resId = R.drawable.weather_icon_clear;
         switch (stickerDesc) {
