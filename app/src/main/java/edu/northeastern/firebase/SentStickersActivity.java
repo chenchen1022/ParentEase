@@ -34,7 +34,7 @@ import edu.northeastern.atyourservice.R;
  * @author Chen Chen
  * @author Lin Han
  */
-public class SentStickersActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class SentStickersActivity extends AppCompatActivity {
     private TextView tv_myUserName;
     private String userName;
     private Spinner userListSpinner;
@@ -125,14 +125,4 @@ public class SentStickersActivity extends AppCompatActivity implements AdapterVi
         }
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String newItem = userListSpinner.getSelectedItem().toString();
-        Toast.makeText(getApplication(), "You selected: " + newItem, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }
