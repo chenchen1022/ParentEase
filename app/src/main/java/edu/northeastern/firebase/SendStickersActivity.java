@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,16 +14,21 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import edu.northeastern.atyourservice.R;
 import edu.northeastern.firebase.utils.MiscellaneousUtil;
 
+/**
+ * The class for Send Stickers Activity.
+ *
+ * @author ShiChang Ye
+ * @author Chen Chen
+ * @author Lin Han
+ */
 public class SendStickersActivity extends AppCompatActivity {
     // Declares fields.
     private static String SERVER_KEY;
@@ -42,10 +50,20 @@ public class SendStickersActivity extends AppCompatActivity {
     private Map<ImageView, Integer> imageToSendCountMap;
     private Map<View, Boolean> clickedImageMap;
 
+    /**
+     * The onCreate method called when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it
+     *                           most recently supplied in {@link #onSaveInstanceState}. <b><i>Note:
+     *                           Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_stickers);
+
+        createNotificationChannel();
 
         // Binds widgets from the layout to the fields.
         userNameTv = findViewById(R.id.userNameTv);
@@ -65,7 +83,6 @@ public class SendStickersActivity extends AppCompatActivity {
 
         // Gets the server key
         SERVER_KEY = "key=" + MiscellaneousUtil.getProperties(this).getProperty("SERVER_KEY");
-
     }
 
     private void initializeImageViewsAndTextViews() {
@@ -104,6 +121,11 @@ public class SendStickersActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Handles the image click event.
+     *
+     * @param view the image view that is clicked
+     */
     private void handleImageClick(View view) {
         // If the clicked view is in the clicked status, restore its status.
         if (clickedImageMap.size() != 0 && clickedImageMap.get(view) != null) {
@@ -119,5 +141,42 @@ public class SendStickersActivity extends AppCompatActivity {
         }
         clickedImageMap.clear();
         clickedImageMap.put(view, true);
+    }
+
+    private void updateSendCount() {
+        for (int i = 0; i < imageViewList.size(); i++) {
+            ImageView curImageView = imageViewList.get(i);
+            TextView curTextView = textViewList.get(i);
+            curTextView.setText("Send count: " + imageToSendCountMap.get(curImageView));
+        }
+    }
+
+    /**
+     * Create notification channel.
+     */
+    public void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is not in the Support Library.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            String id = getString(R.string.channel_id);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            // create new channel
+            NotificationChannel channel = new NotificationChannel(id, name, importance);
+
+            // Set description.
+            channel.setDescription(description);
+            channel.enableLights(true);
+
+            // Set color.
+            channel.setLightColor(Color.argb(255, 228, 14, 18));
+
+            // Register the channel with the system. You can't change the importance
+            // or other notification behaviors after this.
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }
