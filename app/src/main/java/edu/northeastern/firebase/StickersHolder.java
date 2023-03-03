@@ -26,9 +26,9 @@ public class StickersHolder extends RecyclerView.ViewHolder {
      */
     public StickersHolder(@NonNull View itemView) {
         super(itemView);
-        this.fromUser = itemView.findViewById(R.id.fromUser);
-        this.sendTime = itemView.findViewById(R.id.sendTimes);
-        this.receivedStickers = itemView.findViewById(R.id.receviedStickers);
+        this.fromUser = itemView.findViewById(R.id.fromUserItem);
+        this.sendTime = itemView.findViewById(R.id.sendTimesItem);
+        this.receivedStickers = itemView.findViewById(R.id.receviedStickersRV);
     }
 
 
