@@ -15,6 +15,7 @@ import edu.northeastern.firebase.RegisterActivity;
  * The main activity for the app.
  *
  * @author Chen Chen
+ * @author Shichang Ye
  */
 public class MainActivity extends AppCompatActivity {
     // Creates buttons for this activity.
@@ -35,8 +36,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Combines buttons from the layout to the activity class.
+        // Binds buttons from the layout to the fields of activity class.
         atYourServiceBtn = findViewById(R.id.atYourServiceBtn);
+        aboutBtn = findViewById(R.id.aboutBtn);
+        stickItToEmBtn = findViewById(R.id.databaseBtn);
 
         // Sets the click listener for the atYourServiceBtn button.
         atYourServiceBtn.setOnClickListener(view -> {
@@ -44,23 +47,16 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        aboutBtn = findViewById(R.id.aboutBtn);
-
         // Sets the click listener for the About button
-
         aboutBtn.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(intent);
         });
 
-        stickItToEmBtn = findViewById(R.id.databaseBtn);
-
         // Sets the click listener for the About button
-
         stickItToEmBtn.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
-
     }
 }

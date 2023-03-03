@@ -1,4 +1,4 @@
-package edu.northeastern;
+package edu.northeastern.firebase.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

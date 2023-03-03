@@ -27,7 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import edu.northeastern.NetworkUtil;
+import edu.northeastern.firebase.utils.NetworkUtil;
 
 /**
  * The class for the At Your Service activity.

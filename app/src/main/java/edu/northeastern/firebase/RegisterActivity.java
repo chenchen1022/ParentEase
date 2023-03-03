@@ -1,60 +1,86 @@
 package edu.northeastern.firebase;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import edu.northeastern.MainActivity;
 import edu.northeastern.atyourservice.R;
+import edu.northeastern.firebase.dao.UserDao;
+import edu.northeastern.firebase.entity.User;
 
+/**
+ * The register activity class that helps register a user.
+ */
 public class RegisterActivity extends AppCompatActivity {
+    private static String CLIENT_REGISTRATION_TOKEN;
+
     Button btnRegister;
     TextView inputUserName;
-    DAOUser userDao;
+    UserDao userDao;
 
+    /**
+     * The onCreate method called when the activity starts.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.
+     *                           <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        userDao = new DAOUser();
-        btnRegister = findViewById(R.id.btn_register);
-        inputUserName = findViewById(R.id.id_username);
+        // Binds widgets from the layout to the fields.
+        btnRegister = findViewById(R.id.btnRegister);
+        inputUserName = findViewById(R.id.inputUserName);
 
-        btnRegister.setOnClickListener(view -> {
-            User user = new User("1", inputUserName.getText().toString());
-            userDao.add(user).addOnSuccessListener(success -> {
-                Toast.makeText(RegisterActivity.this, "Registered successfully.", Toast.LENGTH_LONG).show();
-            }).addOnFailureListener(error -> {
-                Toast.makeText(RegisterActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
-            });
+        // Create a user dao to access the database.
+        userDao = new UserDao();
 
-            //Jump to SendStickersActivity
-            Intent intent = new Intent(RegisterActivity.this, SentStickersActivity.class);
-            intent.putExtra("userName", inputUserName.getText().toString());
-            startActivity(intent);
-        });
+        btnRegister.setOnClickListener(view -> createUser());
+    }
 
-        final String[] tokenResult = {""};
-        Task<String> token = FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (!task.isSuccessful()) {
-                    System.out.println("Not successful!");
-                } else {
-                    tokenResult[0] = task.getResult();
-                    System.out.println("token got ===" + tokenResult[0]);
-                }
+    /**
+     * Creates the user in the database.
+     */
+    private void createUser() {
+        String userName = inputUserName.getText().toString();
+        // Checks the validity of the user name input.
+        if (userName.strip().length() == 0) {
+            Toast.makeText(this, "Invalid! Empty user name.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Creates the user based on the user name input and the
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Toast.makeText(this, "Registration failed: failed to get token.", Toast.LENGTH_LONG).show();
+                Log.w("RegisterActivity", "Registration failed: failed to get token.");
+                return;
             }
+            // The CLIENT_REGISTRATION_TOKEN can be obtained once the task succeeds.
+            CLIENT_REGISTRATION_TOKEN = task.getResult();
+            User user = new User(CLIENT_REGISTRATION_TOKEN, userName);
+
+            // Call the create method from userdao to create the new user.
+            userDao.create(user).addOnSuccessListener(result -> {
+                Toast.makeText(this, "Registered successfully.", Toast.LENGTH_SHORT).show();
+            }).addOnFailureListener(result -> {
+                Toast.makeText(this, result.getMessage(), Toast.LENGTH_LONG).show();
+            });
         });
+
+        // Jumps to SendStickersActivity.
+        Intent intent = new Intent(this, SentStickersActivity.class);
+        intent.putExtra("userName", userName);
+        startActivity(intent);
     }
 }
