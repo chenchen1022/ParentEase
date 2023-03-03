@@ -27,6 +27,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import edu.northeastern.NetworkUtil;
+
 /**
  * The class for the At Your Service activity.
  *
