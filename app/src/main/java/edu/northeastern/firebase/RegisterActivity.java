@@ -3,6 +3,7 @@ package edu.northeastern.firebase;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import edu.northeastern.MainActivity;
 import edu.northeastern.atyourservice.R;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -35,6 +37,11 @@ public class RegisterActivity extends AppCompatActivity {
             }).addOnFailureListener(error -> {
                 Toast.makeText(RegisterActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
             });
+
+            //Jump to SendStickersActivity
+            Intent intent = new Intent(RegisterActivity.this, SentStickersActivity.class);
+            intent.putExtra("userName", inputUserName.getText().toString());
+            startActivity(intent);
         });
 
         final String[] tokenResult = {""};
