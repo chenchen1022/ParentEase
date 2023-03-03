@@ -1,12 +1,13 @@
 package edu.northeastern.firebase;
 
 public class User {
+    private String id;
     private String userName;
 
     public User(){};
 
-    public User(String userName) {
-        this.userName = userName;
+    public User(String id, String userName) {
+        this.id = id;this.userName = userName;
     }
 
     public String getUserName() {
@@ -17,4 +18,11 @@ public class User {
         this.userName = userName;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
