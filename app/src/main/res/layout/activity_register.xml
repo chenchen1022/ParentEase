@@ -13,13 +13,13 @@
         android:text="Register"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/id_username"
+        app:layout_constraintTop_toBottomOf="@id/inputUserName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         tools:layout_editor_absoluteY="182dp" />
 
     <EditText
-        android:id="@+id/id_username"
+        android:id="@+id/inputUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/holo_blue_light"
@@ -33,17 +33,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5" />
-
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/id_username"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:ems="10"-->
-    <!--        android:inputType="textPersonName"-->
-    <!--        android:minHeight="36dp"-->
-    <!--        android:text=""-->
-    <!--        android:textAlignment="center"-->
-    <!--        tools:layout_editor_absoluteX="124dp"-->
-    <!--        tools:layout_editor_absoluteY="185dp" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>
