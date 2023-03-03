@@ -1,5 +1,6 @@
 package edu.northeastern.firebase;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.NotificationChannel;
@@ -7,14 +8,21 @@ import android.app.NotificationManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 
 import edu.northeastern.atyourservice.R;
@@ -26,12 +34,13 @@ import edu.northeastern.atyourservice.R;
  * @author Chen Chen
  * @author Lin Han
  */
-public class SentStickersActivity extends AppCompatActivity {
+public class SentStickersActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private TextView tv_myUserName;
     private String userName;
     private Spinner userListSpinner;
-    DatabaseReference spinnerRef;
-    ArrayList<String> spinnerList;
+
+    DatabaseReference myDB = FirebaseDatabase.getInstance().getReference();
+    ArrayList<String> spinnerList = new ArrayList<>(); //holds all users available to send stikcer to
     ArrayAdapter<String> adapter;
 
     /**
@@ -57,17 +66,34 @@ public class SentStickersActivity extends AppCompatActivity {
         //set up UI elements
         tv_myUserName = findViewById(R.id.myUsername);
         tv_myUserName.setText("My username: " + userName);
+        userListSpinner = findViewById(R.id.spinnerUsers);
 
         //TODO: drop downlist should connect to the database
-        userListSpinner = findViewById(R.id.spinnerUsers);
-        spinnerRef = FirebaseDatabase.getInstance().getReference("User");
+        //Link to the database and get all users
+        spinnerList.add("...");
+        Showdata();
+    }
 
-        spinnerList = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(SentStickersActivity.this, android.R.layout.simple_spinner_dropdown_item);
+    private void Showdata() {
+        myDB.child("User").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                spinnerList.clear();
+                for (DataSnapshot item: snapshot.getChildren()) {
+                    spinnerList.add(item.child("userName").getValue(String.class));
+                    System.out.println(item.child("userName").getValue(String.class));
+                }
 
+                adapter = new ArrayAdapter<String>(SentStickersActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerList);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                userListSpinner.setAdapter(adapter);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-
+            }
+        });
     }
 
     /**
@@ -97,5 +123,16 @@ public class SentStickersActivity extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String newItem = userListSpinner.getSelectedItem().toString();
+        Toast.makeText(getApplication(), "You selected: " + newItem, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
