@@ -40,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             //Jump to SendStickersActivity
             Intent intent = new Intent(RegisterActivity.this, SentStickersActivity.class);
+            intent.putExtra("userName", inputUserName.getText().toString());
             startActivity(intent);
         });
 
