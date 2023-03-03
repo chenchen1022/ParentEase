@@ -79,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         // Jumps to SendStickersActivity.
-        Intent intent = new Intent(this, SentStickersActivity.class);
+        Intent intent = new Intent(this, SendStickersActivity.class);
         intent.putExtra("userName", userName);
         startActivity(intent);
     }

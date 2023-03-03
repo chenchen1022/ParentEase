@@ -190,7 +190,7 @@
         app:layout_constraintGuide_percent="0.88" />
 
     <Button
-        android:id="@+id/btn_submit"
+        android:id="@+id/submitBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit"
@@ -198,7 +198,7 @@
         tools:layout_editor_absoluteY="362dp" />
 
     <Button
-        android:id="@+id/btn_sentHistory"
+        android:id="@+id/sentHistoryBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sent History"
@@ -206,7 +206,7 @@
         tools:layout_editor_absoluteY="362dp" />
 
     <TextView
-        android:id="@+id/myUsername"
+        android:id="@+id/userNameTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="My username: "
@@ -227,11 +227,11 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/guideline13"
-        app:layout_constraintStart_toEndOf="@id/myUsername"
-        app:layout_constraintEnd_toStartOf="@id/spinnerUsers" />
+        app:layout_constraintStart_toEndOf="@id/userNameTv"
+        app:layout_constraintEnd_toStartOf="@id/usersSpinner" />
 
     <Spinner
-        android:id="@+id/spinnerUsers"
+        android:id="@+id/usersSpinner"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:spinnerMode="dropdown"

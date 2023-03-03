@@ -23,7 +23,7 @@ public class UserDao {
     public UserDao() {
         //Gets the database reference, which is the root of the json document.
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-        databaseReference = db.getReference(User.class.getSimpleName());
+        databaseReference = db.getReference();
     }
 
     /**
