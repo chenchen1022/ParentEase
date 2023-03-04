@@ -9,7 +9,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.Arrays;
+import java.util.List;
 
 import edu.northeastern.atyourservice.R;
 import edu.northeastern.firebase.dao.UserDao;
@@ -70,7 +75,15 @@ public class RegisterActivity extends AppCompatActivity {
             }
             // The CLIENT_REGISTRATION_TOKEN can be obtained once the task succeeds.
             CLIENT_REGISTRATION_TOKEN = task.getResult();
-            User user = new User(CLIENT_REGISTRATION_TOKEN, userName);
+            Sticker sticker1 = new Sticker("Alan", "John", "2023-03-03", "1");
+            Sticker sticker2 = new Sticker("Alan", "Smith", "2023-03-03", "2");
+            Sticker sticker3 = new Sticker("Smith", "Alan", "2023-03-03", "3");
+            Sticker sticker4 = new Sticker("John", "Alan", "2023-03-03", "4");
+
+            List<Sticker> stickersSent = Arrays.asList(sticker1, sticker2);
+            List<Sticker> stickersReceived = Arrays.asList(sticker3, sticker4);
+
+            User user = new User(userName, CLIENT_REGISTRATION_TOKEN, stickersSent, stickersReceived);
 
             // Call the create method from userdao to create the new user. --> CC: should be add not create
             userDao.create(user).addOnSuccessListener(result -> {

@@ -21,9 +21,9 @@ public class UserDao {
      * Non-argument constructor for the class.
      */
     public UserDao() {
-        //Gets the database reference, which is the root of the json document.
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        databaseReference = db.getReference();
+        // Gets the database reference, which is the root of the json document.
+        // Reference: https://firebase.google.com/docs/database/android/read-and-write#get_a_databasereference
+        databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
     /**
@@ -34,6 +34,6 @@ public class UserDao {
      */
     public Task<Void> create(User user) {
         Objects.requireNonNull(user);
-        return databaseReference.child("users").child(user.getUserToken()).setValue(user);
+        return databaseReference.child("users").child(user.getUserName()).setValue(user);
     }
 }
