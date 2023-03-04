@@ -49,6 +49,8 @@ public class User implements Parcelable {
     protected User(Parcel in) {
         userName = in.readString();
         userToken = in.readString();
+        stickersSent = in.readArrayList(Sticker.class.getClassLoader());
+        stickersReceived = in.readArrayList(Sticker.class.getClassLoader());
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -123,5 +125,7 @@ public class User implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(userName);
         dest.writeString(userToken);
+        dest.writeList(stickersSent);
+        dest.writeList(stickersReceived);
     }
 }

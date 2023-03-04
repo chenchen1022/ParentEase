@@ -47,7 +47,7 @@ public class StickersCollectedHistory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stickers_received_history);
-        currentUser = getIntent().getParcelableExtra("currentUser");
+        currentUser = getIntent().getExtras().getParcelable("User");
         System.out.println(currentUser);
         System.out.println("Here I am");
 
@@ -59,7 +59,10 @@ public class StickersCollectedHistory extends AppCompatActivity {
 
         stickersList = new ArrayList<Sticker>();
         Sticker sticker1 = new Sticker("Alan", "John", "2023-03-03", "1");
-        stickersList.add(sticker1);
+        for (Sticker s: currentUser.getStickersReceived()){
+            stickersList.add(s);
+        }
+
         stickerAdapter = new StickersAdapter(stickersList);
         recyclerView.setAdapter(stickerAdapter);
     }

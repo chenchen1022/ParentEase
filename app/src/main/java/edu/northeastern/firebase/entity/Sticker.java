@@ -1,11 +1,16 @@
 package edu.northeastern.firebase.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 /**
  * The class that represents a Sticker item.
  *
  * @author Manping Zhao
  */
-public class Sticker {
+public class Sticker implements Parcelable {
     private String sender;
     private String receiver;
     private String timeStamp;
@@ -31,6 +36,25 @@ public class Sticker {
         this.timeStamp = timeStamp;
         this.stickerDes = stickerDes;
     }
+
+    protected Sticker(Parcel in) {
+        sender = in.readString();
+        receiver = in.readString();
+        timeStamp = in.readString();
+        stickerDes = in.readString();
+    }
+
+    public static final Creator<Sticker> CREATOR = new Creator<Sticker>() {
+        @Override
+        public Sticker createFromParcel(Parcel in) {
+            return new Sticker(in);
+        }
+
+        @Override
+        public Sticker[] newArray(int size) {
+            return new Sticker[size];
+        }
+    };
 
     /**
      * Gets the sender.
@@ -66,5 +90,18 @@ public class Sticker {
      */
     public String getStickerDes() {
         return stickerDes;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(sender);
+        parcel.writeString(receiver);
+        parcel.writeString(timeStamp);
+        parcel.writeString(stickerDes);
     }
 }

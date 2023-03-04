@@ -175,9 +175,10 @@ public class SendStickersActivity extends AppCompatActivity {
 
     private void onStickersCollectedButton() {
             Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("currentUser", currentUser);
-            intent.putExtras(bundle);
+            //Bundle bundle = new Bundle();
+            //bundle.putParcelable("currentUser", currentUser);
+            //System.out.println("currentUser sent: " + currentUser);
+            intent.putExtra("User", currentUser);
             startActivity(intent);
     }
 
@@ -399,7 +400,6 @@ public class SendStickersActivity extends AppCompatActivity {
         Sticker newSticker = new Sticker(currentUser.getUserName(), receiverName, timeStamp, clickedImageString);
         currentUser.getStickersSent().add(newSticker);
         mDatabase.child("users").child(currentUser.getUserName()).setValue(currentUser);
-
         mDatabase.child("users").child(receiverName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
