@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.northeastern.firebase.SentStickersActivity">
+    tools:context="edu.northeastern.firebase.SendStickersActivity">
 
     <ImageView
         android:id="@+id/weather_icon_clear"
-        android:layout_width="145dp"
-        android:layout_height="106dp"
-        android:layout_marginTop="14dp"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        app:layout_constraintBottom_toTopOf="@id/weather_icon_clear_sent_times"
         app:layout_constraintEnd_toStartOf="@id/weather_icon_clouds"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline13"
         app:srcCompat="@drawable/weather_icon_clear" />
@@ -21,7 +20,7 @@
         android:id="@+id/weather_icon_clear_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sent times: "
+        android:text="Sent count: "
         app:layout_constraintBottom_toTopOf="@id/weather_icon_rainbow"
         app:layout_constraintEnd_toStartOf="@id/weather_icon_clouds_sent_times"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,60 +28,59 @@
 
     <ImageView
         android:id="@+id/weather_icon_clouds"
-        android:layout_width="145dp"
-        android:layout_height="106dp"
-        android:layout_marginTop="14dp"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
         app:layout_constraintEnd_toStartOf="@id/weather_icon_rain"
         app:layout_constraintStart_toEndOf="@id/weather_icon_clear"
         app:layout_constraintTop_toTopOf="@id/guideline13"
-        app:srcCompat="@drawable/weather_icon_clouds"
-        tools:layout_editor_absoluteX="204dp"
-        tools:layout_editor_absoluteY="56dp" />
+        app:layout_constraintBottom_toTopOf="@id/weather_icon_clouds_sent_times"
+        app:srcCompat="@drawable/weather_icon_clouds" />
 
     <TextView
         android:id="@+id/weather_icon_clouds_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Sent times: "
+        android:text="Sent count: "
         app:layout_constraintEnd_toStartOf="@id/weather_icon_rain_sent_times"
         app:layout_constraintStart_toEndOf="@id/weather_icon_clear_sent_times"
-        app:layout_constraintTop_toBottomOf="@id/weather_icon_clouds" />
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_clouds"
+        app:layout_constraintBottom_toTopOf="@id/weather_icon_smog"/>
 
     <ImageView
         android:id="@+id/weather_icon_rainbow"
-        android:layout_width="145dp"
-        android:layout_height="106dp"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
         app:layout_constraintBottom_toTopOf="@id/weather_icon_rainbow_sent_times"
         app:layout_constraintEnd_toStartOf="@id/weather_icon_smog"
-        app:layout_constraintHorizontal_bias="0.329"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/weather_icon_clear_sent_times"
         app:srcCompat="@drawable/weather_icon_rainbow" />
 
     <ImageView
         android:id="@+id/weather_icon_snow"
-        android:layout_width="145dp"
-        android:layout_height="106dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
         app:layout_constraintEnd_toStartOf="@id/weather_icon_bolt"
         app:layout_constraintStart_toEndOf="@id/weather_icon_smog"
         app:layout_constraintTop_toBottomOf="@id/weather_icon_rain_sent_times"
+        app:layout_constraintBottom_toTopOf="@id/weather_icon_snow_sent_times"
         app:srcCompat="@drawable/weather_icon_snow" />
 
     <ImageView
         android:id="@+id/weather_icon_bolt"
-        android:layout_width="145dp"
-        android:layout_height="106dp"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
         app:srcCompat="@drawable/weather_icon_bolt"
-        tools:layout_editor_absoluteX="556dp"
-        tools:layout_editor_absoluteY="212dp" />
+        app:layout_constraintStart_toEndOf="@id/weather_icon_snow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_drizzle_sent_times"
+        app:layout_constraintBottom_toTopOf="@id/weather_icon_bolt_sent_times" />
 
     <TextView
         android:id="@+id/weather_icon_smog_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sent times: "
+        android:text="Sent count: "
         app:layout_constraintBottom_toTopOf="@id/guideline14"
         app:layout_constraintEnd_toStartOf="@id/weather_icon_snow_sent_times"
         app:layout_constraintStart_toEndOf="@id/weather_icon_rainbow_sent_times"
@@ -91,22 +89,19 @@
 
     <ImageView
         android:id="@+id/weather_icon_drizzle"
-        android:layout_width="145dp"
-        android:layout_height="106dp"
-        android:layout_marginTop="14dp"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/weather_icon_rain"
         app:layout_constraintTop_toTopOf="@id/guideline13"
-        app:srcCompat="@drawable/weather_icon_drizzle"
-        tools:layout_editor_absoluteX="570dp"
-        tools:layout_editor_absoluteY="56dp" />
+        app:layout_constraintBottom_toTopOf="@id/weather_icon_drizzle_sent_times"
+        app:srcCompat="@drawable/weather_icon_drizzle" />
 
     <TextView
         android:id="@+id/weather_icon_drizzle_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sent times: "
+        android:text="Sent count: "
         app:layout_constraintBottom_toTopOf="@id/weather_icon_bolt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/weather_icon_rain_sent_times"
@@ -117,31 +112,29 @@
         android:id="@+id/weather_icon_snow_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Sent times: "
+        android:text="Sent count: "
         app:layout_constraintEnd_toStartOf="@id/weather_icon_bolt_sent_times"
         app:layout_constraintStart_toEndOf="@id/weather_icon_smog_sent_times"
-        app:layout_constraintTop_toBottomOf="@id/weather_icon_snow" />
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_snow"
+        app:layout_constraintBottom_toTopOf="@id/guideline14"/>
 
     <ImageView
         android:id="@+id/weather_icon_rain"
-        android:layout_width="145dp"
-        android:layout_height="106dp"
-        android:layout_marginTop="14dp"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
         app:layout_constraintEnd_toStartOf="@id/weather_icon_drizzle"
         app:layout_constraintStart_toEndOf="@id/weather_icon_clouds"
         app:layout_constraintTop_toTopOf="@id/guideline13"
+        app:layout_constraintBottom_toTopOf="@id/weather_icon_rain_sent_times"
         app:srcCompat="@drawable/weather_icon_rain" />
 
     <ImageView
         android:id="@+id/weather_icon_smog"
-        android:layout_width="145dp"
-        android:layout_height="106dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
         app:layout_constraintEnd_toStartOf="@id/weather_icon_snow"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@id/weather_icon_rainbow"
-
+        app:layout_constraintBottom_toTopOf="@id/weather_icon_smog_sent_times"
         app:layout_constraintTop_toBottomOf="@id/weather_icon_clouds_sent_times"
         app:srcCompat="@drawable/weather_icon_smog" />
 
@@ -149,27 +142,27 @@
         android:id="@+id/weather_icon_rain_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Sent times: "
+        android:text="Sent count: "
         app:layout_constraintEnd_toStartOf="@id/weather_icon_drizzle_sent_times"
         app:layout_constraintStart_toEndOf="@id/weather_icon_clouds_sent_times"
-        app:layout_constraintTop_toBottomOf="@id/weather_icon_rain" />
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_rain"
+        app:layout_constraintBottom_toTopOf="@id/weather_icon_snow"/>
 
     <TextView
         android:id="@+id/weather_icon_bolt_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sent times: "
+        android:text="Sent count: "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/weather_icon_snow_sent_times"
-        tools:layout_editor_absoluteX="587dp"
-        tools:layout_editor_absoluteY="328dp" />
+        app:layout_constraintTop_toBottomOf="@id/weather_icon_bolt"
+        app:layout_constraintBottom_toTopOf="@id/guideline14" />
 
     <TextView
         android:id="@+id/weather_icon_rainbow_sent_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sent times: "
+        android:text="Sent count: "
         app:layout_constraintBottom_toTopOf="@id/guideline14"
         app:layout_constraintEnd_toStartOf="@id/weather_icon_smog_sent_times"
         app:layout_constraintStart_toStartOf="parent"
@@ -187,23 +180,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.88" />
+        app:layout_constraintGuide_percent="0.8832117" />
 
     <Button
         android:id="@+id/submitBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit"
-        tools:layout_editor_absoluteX="184dp"
-        tools:layout_editor_absoluteY="362dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/stickersCollectedBtn"
+        app:layout_constraintTop_toTopOf="@id/guideline14"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
-        android:id="@+id/sentHistoryBtn"
+        android:id="@+id/stickersCollectedBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sent History"
-        tools:layout_editor_absoluteX="432dp"
-        tools:layout_editor_absoluteY="362dp" />
+        android:text="Stickers Collected"
+        app:layout_constraintStart_toStartOf="@id/submitBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline14"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/userNameTv"
