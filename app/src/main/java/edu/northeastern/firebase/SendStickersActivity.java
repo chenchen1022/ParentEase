@@ -1,5 +1,7 @@
 package edu.northeastern.firebase;
 
+import static edu.northeastern.firebase.utils.MiscellaneousUtil.getProperties;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -175,10 +177,9 @@ public class SendStickersActivity extends AppCompatActivity {
 
     private void onStickersCollectedButton() {
             Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
-            //Bundle bundle = new Bundle();
-            //bundle.putParcelable("currentUser", currentUser);
-            //System.out.println("currentUser sent: " + currentUser);
-            intent.putExtra("User", currentUser);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("currentUser", currentUser);
+            intent.putExtras(bundle);
             startActivity(intent);
     }
 
@@ -400,6 +401,7 @@ public class SendStickersActivity extends AppCompatActivity {
         Sticker newSticker = new Sticker(currentUser.getUserName(), receiverName, timeStamp, clickedImageString);
         currentUser.getStickersSent().add(newSticker);
         mDatabase.child("users").child(currentUser.getUserName()).setValue(currentUser);
+
         mDatabase.child("users").child(receiverName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
