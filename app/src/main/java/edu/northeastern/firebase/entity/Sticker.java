@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
  * The class that represents a Sticker item.
  *
  * @author Manping Zhao
+ * @author Chen Chen
  */
 public class Sticker implements Parcelable {
     private String sender;
