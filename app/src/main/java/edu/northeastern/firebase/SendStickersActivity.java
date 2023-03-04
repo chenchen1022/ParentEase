@@ -30,6 +30,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -262,6 +270,41 @@ public class SendStickersActivity extends AppCompatActivity {
 
             currentTextView.setText(SENT_COUNT + currentCount);
         }
+    }
+
+
+
+    /**
+     * Do a payload when send message to other user.
+     *
+     * @param targetUserName the target user name
+     * @param sticker the sticker will sent to other user
+     */
+    private void sendMessageToOtherUser(String targetUserName, Sticker sticker) {
+        System.out.println("targetUserName: " + targetUserName);
+        System.out.println("stickerSentFrom: " + sticker.getSender());
+
+        // Get notification json file
+        JSONObject notification = new JSONObject();
+        JSONObject data = new JSONObject();
+        JSONObject payload = new JSONObject();
+
+        String notificationTitle = "New sticker from" + sticker.getSender();
+        String notificationBody = sticker.getStickerDes();
+
+        try {
+            notification.put("title", notificationTitle);
+            notification.put("body", notificationBody);
+            data.put("title:", "data:" + notificationTitle);
+            data.put("body", "data:" + notificationBody);
+            payload.put("to", targetUserName);
+            payload.put("priority", "high");
+            payload.put("notification", notification);
+            payload.put("data", data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
