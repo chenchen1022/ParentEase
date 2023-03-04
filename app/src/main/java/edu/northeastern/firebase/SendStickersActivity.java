@@ -12,6 +12,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -180,11 +181,11 @@ public class SendStickersActivity extends AppCompatActivity {
     }
 
     private void onStickersCollectedButton() {
-            Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("currentUser", currentUser);
-            intent.putExtras(bundle);
-            startActivity(intent);
+        Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("currentUser", currentUser);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     /**
@@ -352,7 +353,7 @@ public class SendStickersActivity extends AppCompatActivity {
      * Do a payload when send message to other user.
      *
      * @param targetUserToken the target user token
-     * @param sticker        the sticker will sent to other user
+     * @param sticker         the sticker will sent to other user
      */
     private void sendMessageToOtherUser(String targetUserToken, Sticker sticker) {
         System.out.println("targetUserName: " + targetUserToken);
@@ -382,9 +383,15 @@ public class SendStickersActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        System.out.println("Json Payload " + payload);
+        // Creates a new thread to run the network activity to avoid NetworkOnMainThreadException.
+        Thread newThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String resp = fcmHttpConnection(SERVER_KEY, payload);
+            }
+        });
 
-        final String resp = fcmHttpConnection(SERVER_KEY, payload);
+        newThread.start();
     }
 
     private static String fcmHttpConnection(String serverToken, JSONObject jsonObject) {
@@ -394,7 +401,7 @@ public class SendStickersActivity extends AppCompatActivity {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Authorization",serverToken);
+            connection.setRequestProperty("Authorization", serverToken);
             connection.setDoOutput(true);
 
             OutputStream outputStream = connection.getOutputStream();
