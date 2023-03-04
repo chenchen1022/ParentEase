@@ -118,7 +118,6 @@ public class SendStickersActivity extends AppCompatActivity {
                 spinnerList.clear();
                 for (DataSnapshot item: snapshot.getChildren()) {
                     spinnerList.add(item.child("userName").getValue(String.class));
-                    System.out.println(item.child("userName").getValue(String.class));
                 }
 
                 adapter = new ArrayAdapter<String>(SendStickersActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerList);
