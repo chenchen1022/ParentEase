@@ -1,5 +1,7 @@
 package edu.northeastern.firebase;
 
+import static edu.northeastern.firebase.utils.MiscellaneousUtil.getProperties;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -118,7 +120,7 @@ public class SendStickersActivity extends AppCompatActivity {
         userNameTv = findViewById(R.id.userNameTv);
         usersSpinner = findViewById(R.id.usersSpinner);
         submitBtn = findViewById(R.id.submitBtn);
-        sentHistoryBtn = findViewById(R.id.sentHistoryBtn);
+        sentHistoryBtn = findViewById(R.id.stickersCollectedBtn);
 
         imageToTextView = new HashMap<>();
         imageToSendCount = new HashMap<>();
@@ -150,9 +152,7 @@ public class SendStickersActivity extends AppCompatActivity {
 
         //When click sent history, go to sentHistory Activity
         sentHistoryBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
-            intent.putExtra("user", currentUser);
-            startActivity(intent);
+            onStickersCollectedButton();
         });
 
         initializeImageViewsAndTextViews();
@@ -174,6 +174,14 @@ public class SendStickersActivity extends AppCompatActivity {
 
         // Gets the server key
         SERVER_KEY = "key=" + MiscellaneousUtil.getProperties(this).getProperty("SERVER_KEY");
+    }
+
+    private void onStickersCollectedButton() {
+            Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("currentUser", currentUser);
+            intent.putExtras(bundle);
+            startActivity(intent);
     }
 
     /**

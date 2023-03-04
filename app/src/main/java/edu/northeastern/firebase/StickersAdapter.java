@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import edu.northeastern.atyourservice.R;
-import edu.northeastern.firebase.Sticker;
 import edu.northeastern.firebase.StickersHolder;
+import edu.northeastern.firebase.entity.Sticker;
 
 /**
  * The adaptor for the stickers recycler view.

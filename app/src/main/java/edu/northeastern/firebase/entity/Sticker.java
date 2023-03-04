@@ -98,10 +98,10 @@ public class Sticker implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(sender);
-        dest.writeString(receiver);
-        dest.writeString(timeStamp);
-        dest.writeString(stickerDes);
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(sender);
+        parcel.writeString(receiver);
+        parcel.writeString(timeStamp);
+        parcel.writeString(stickerDes);
     }
 }
