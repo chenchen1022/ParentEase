@@ -5,7 +5,13 @@ import android.content.res.AssetManager;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
+import java.util.TimeZone;
 
 public class MiscellaneousUtil {
     /**
@@ -26,5 +32,16 @@ public class MiscellaneousUtil {
         }
 
         return properties;
+    }
+
+    /**
+     * Gets the time stamp.
+     *
+     * @return the time stamp
+     */
+    public static String getTimeStamp() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return simpleDateFormat.format(calendar.getTime());
     }
 }

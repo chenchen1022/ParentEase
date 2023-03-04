@@ -11,6 +11,7 @@ import android.app.NotificationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,7 +36,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -91,7 +91,7 @@ public class SendStickersActivity extends AppCompatActivity {
 
     private Map<String, TextView> imageToTextView;
     private Map<String, Integer> imageToSendCount;
-    private Map<View, Boolean> clickedImageMap;
+    private Map<View, String> clickedImageMap;
 
     private DatabaseReference myDB = FirebaseDatabase.getInstance().getReference();
     private ArrayList<String> spinnerList = new ArrayList<>(); //holds all users available to send stikcer to
@@ -131,15 +131,45 @@ public class SendStickersActivity extends AppCompatActivity {
 
         //get user list for the spinner View
         spinnerShowData();
+        usersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String receiverName = usersSpinner.getSelectedItem().toString();
+                if (receiverName.strip().length() == 0) {
+                    return;
+                }
+                updateSendCount(receiverName);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         //When click sent history, go to sentHistory Activity
         sentHistoryBtn.setOnClickListener(view -> {
             Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
+            intent.putExtra("user", currentUser);
             startActivity(intent);
         });
 
         initializeImageViewsAndTextViews();
         syncData();
+
+        submitBtn.setOnClickListener(view -> {
+            String receiverName = usersSpinner.getSelectedItem().toString();
+            if (receiverName == null || receiverName.strip().length() == 0) {
+                Toast.makeText(SendStickersActivity.this, "Please pick a receiver.", Toast.LENGTH_LONG).show();
+                return;
+            }
+            onSubmitButtonClicked(receiverName);
+
+            for (View v : clickedImageMap.keySet()) {
+                ((ImageView) v).setColorFilter(null);
+            }
+            clickedImageMap.clear();
+        });
 
         // Gets the server key
         SERVER_KEY = "key=" + MiscellaneousUtil.getProperties(this).getProperty("SERVER_KEY");
@@ -153,7 +183,7 @@ public class SendStickersActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 spinnerList.clear();
-                for (DataSnapshot item: snapshot.getChildren()) {
+                for (DataSnapshot item : snapshot.getChildren()) {
                     spinnerList.add(item.child("userName").getValue(String.class));
                 }
 
@@ -226,8 +256,35 @@ public class SendStickersActivity extends AppCompatActivity {
         for (View imageView : clickedImageMap.keySet()) {
             ((ImageView) imageView).setColorFilter(null);
         }
+
+        // Clears the previously clicked view and puts the newly clicked view in the map.
         clickedImageMap.clear();
-        clickedImageMap.put(view, true);
+        switch (view.getId()) {
+            case R.id.weather_icon_clear:
+                clickedImageMap.put(view, WEATHER_ICON_CLEAR);
+                break;
+            case R.id.weather_icon_clouds:
+                clickedImageMap.put(view, WEATHER_ICON_CLOUDS);
+                break;
+            case R.id.weather_icon_rain:
+                clickedImageMap.put(view, WEATHER_ICON_RAIN);
+                break;
+            case R.id.weather_icon_drizzle:
+                clickedImageMap.put(view, WEATHER_ICON_DRIZZLE);
+                break;
+            case R.id.weather_icon_rainbow:
+                clickedImageMap.put(view, WEATHER_ICON_RAINBOW);
+                break;
+            case R.id.weather_icon_smog:
+                clickedImageMap.put(view, WEATHER_ICON_SMOG);
+                break;
+            case R.id.weather_icon_snow:
+                clickedImageMap.put(view, WEATHER_ICON_SNOW);
+                break;
+            case R.id.weather_icon_bolt:
+                clickedImageMap.put(view, WEATHER_ICON_BOLT);
+                break;
+        }
     }
 
     /**
@@ -247,9 +304,6 @@ public class SendStickersActivity extends AppCompatActivity {
                 currentUser = task.getResult().getValue(User.class);
             }
         });
-    }
-
-    private void updateSpinner() {
     }
 
     /**
@@ -272,14 +326,11 @@ public class SendStickersActivity extends AppCompatActivity {
         }
     }
 
-
-
-
     /**
      * Do a payload when send message to other user.
      *
      * @param targetUserName the target user name
-     * @param sticker the sticker will sent to other user
+     * @param sticker        the sticker will sent to other user
      */
     private void sendMessageToOtherUser(String targetUserName, Sticker sticker) {
         System.out.println("targetUserName: " + targetUserName);
@@ -319,7 +370,43 @@ public class SendStickersActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    /**
+     * Handles the click of the submit button.
+     *
+     * @param receiverName the receiver name
+     */
+    private void onSubmitButtonClicked(String receiverName) {
+        if (clickedImageMap.size() == 0) {
+            Toast.makeText(this, "Please select an image.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String timeStamp = MiscellaneousUtil.getTimeStamp();
+        String clickedImageString = "";
+        for (String str : clickedImageMap.values()) {
+            clickedImageString = str;
+        }
+
+        // Adds the current sticker to the sender and receiver.
+        Sticker newSticker = new Sticker(currentUser.getUserName(), receiverName, timeStamp, clickedImageString);
+        currentUser.getStickersSent().add(newSticker);
+        mDatabase.child("users").child(currentUser.getUserName()).setValue(currentUser);
+
+        mDatabase.child("users").child(receiverName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(SendStickersActivity.this, "Failed to send the image.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                User receiver = task.getResult().getValue(User.class);
+                receiver.getStickersReceived().add(newSticker);
+                mDatabase.child("users").child(receiverName).setValue(receiver);
+            }
+        });
     }
 
     /**
