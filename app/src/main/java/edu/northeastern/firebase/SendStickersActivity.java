@@ -118,7 +118,7 @@ public class SendStickersActivity extends AppCompatActivity {
         userNameTv = findViewById(R.id.userNameTv);
         usersSpinner = findViewById(R.id.usersSpinner);
         submitBtn = findViewById(R.id.submitBtn);
-        sentHistoryBtn = findViewById(R.id.sentHistoryBtn);
+        sentHistoryBtn = findViewById(R.id.stickersCollectedBtn);
 
         imageToTextView = new HashMap<>();
         imageToSendCount = new HashMap<>();
