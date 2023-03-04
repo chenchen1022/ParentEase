@@ -149,9 +149,7 @@ public class SendStickersActivity extends AppCompatActivity {
 
         //When click sent history, go to sentHistory Activity
         sentHistoryBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
-            intent.putExtra("user", currentUser);
-            startActivity(intent);
+            onStickersCollectedButton();
         });
 
         initializeImageViewsAndTextViews();
@@ -173,6 +171,14 @@ public class SendStickersActivity extends AppCompatActivity {
 
         // Gets the server key
         SERVER_KEY = "key=" + MiscellaneousUtil.getProperties(this).getProperty("SERVER_KEY");
+    }
+
+    private void onStickersCollectedButton() {
+            Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("currentUser", currentUser);
+            intent.putExtras(bundle);
+            startActivity(intent);
     }
 
     /**
