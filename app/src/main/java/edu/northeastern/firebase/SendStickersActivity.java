@@ -348,11 +348,11 @@ public class SendStickersActivity extends AppCompatActivity {
     /**
      * Do a payload when send message to other user.
      *
-     * @param targetUserName the target user name
+     * @param targetUserToken the target user token
      * @param sticker        the sticker will sent to other user
      */
-    private void sendMessageToOtherUser(String targetUserName, Sticker sticker) {
-        System.out.println("targetUserName: " + targetUserName);
+    private void sendMessageToOtherUser(String targetUserToken, Sticker sticker) {
+        System.out.println("targetUserName: " + targetUserToken);
         System.out.println("stickerSentFrom: " + sticker.getSender());
 
         // Get notification json file
@@ -368,7 +368,7 @@ public class SendStickersActivity extends AppCompatActivity {
             notification.put("body", notificationBody);
             data.put("title:", "data:" + notificationTitle);
             data.put("body", "data:" + notificationBody);
-            payload.put("to", targetUserName);
+            payload.put("to", targetUserToken);
             payload.put("priority", "high");
             payload.put("notification", notification);
             payload.put("data", data);
@@ -382,7 +382,8 @@ public class SendStickersActivity extends AppCompatActivity {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Authorization", sticker.getSender());
+            connection.setRequestProperty("Authorization", SERVER_KEY);
+            connection.setDoOutput(true);
             OutputStream outputStream = connection.getOutputStream();
             outputStream.write(payload.toString().getBytes());
             outputStream.close();
@@ -428,6 +429,8 @@ public class SendStickersActivity extends AppCompatActivity {
                 System.out.println("here onSubmitButtonClicked****");
                 updateSendCount(receiverName);
                 Toast.makeText(SendStickersActivity.this, "Image sent successfully.", Toast.LENGTH_LONG).show();
+
+                sendMessageToOtherUser(receiver.getUserToken(), newSticker);
             }
         });
     }
