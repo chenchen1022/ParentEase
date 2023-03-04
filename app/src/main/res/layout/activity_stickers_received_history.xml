@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/receviedStickers"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@id/fromUser"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,10 +45,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/receivedStickersRecyclerView"
-        android:layout_width="410dp"
-        android:layout_height="827dp"
-        app:layout_constraintTop_toBottomOf="@id/receviedStickers"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="411dp"
+        android:layout_height="685dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/receviedStickers" />
 </androidx.constraintlayout.widget.ConstraintLayout>
