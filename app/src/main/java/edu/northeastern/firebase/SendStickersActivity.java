@@ -274,6 +274,7 @@ public class SendStickersActivity extends AppCompatActivity {
 
 
 
+
     /**
      * Do a payload when send message to other user.
      *
@@ -302,6 +303,20 @@ public class SendStickersActivity extends AppCompatActivity {
             payload.put("notification", notification);
             payload.put("data", data);
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // do a payload
+        try {
+            URL url = new URL("https://fcm.googleapis.com/fcm/send");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Authorization", sticker.getSender());
+            OutputStream outputStream = connection.getOutputStream();
+            outputStream.write(payload.toString().getBytes());
+            outputStream.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
