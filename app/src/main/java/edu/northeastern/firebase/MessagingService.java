@@ -13,9 +13,17 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.HashMap;
+import java.util.Objects;
+
 import edu.northeastern.atyourservice.R;
+import edu.northeastern.firebase.entity.User;
 
 /**
  * The class for messaging service.
@@ -28,11 +36,6 @@ public class MessagingService extends FirebaseMessagingService {
     private static final String CHANNEL_NAME = "group_18_stick_it_to_em";
     private static final String CHANNEL_DESCRIPTION = "group_19_stick_it_to_em";
 
-    @Override
-    public void onNewToken(@NonNull String token) {
-        super.onNewToken(token);
-    }
-
     /**
      * The send notification method called when remoteMessage is not null.
      *
@@ -40,7 +43,7 @@ public class MessagingService extends FirebaseMessagingService {
      */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        if (remoteMessage.getFrom() != null) {
+        if (remoteMessage.getFrom() != null && remoteMessage.getData().size() > 0) {
             RemoteMessage.Notification notification = remoteMessage.getNotification();
             sendNotification(notification);
         }

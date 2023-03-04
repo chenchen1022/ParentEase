@@ -36,7 +36,10 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -360,8 +363,11 @@ public class SendStickersActivity extends AppCompatActivity {
         JSONObject data = new JSONObject();
         JSONObject payload = new JSONObject();
 
-        String notificationTitle = "New sticker from" + sticker.getSender();
+        String notificationTitle = "New sticker from " + sticker.getSender();
         String notificationBody = sticker.getStickerDes();
+
+        System.out.println("Notification title: " + notificationTitle);
+        System.out.println("Notification body: " + notificationBody);
 
         try {
             notification.put("title", notificationTitle);
@@ -376,20 +382,47 @@ public class SendStickersActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        System.out.println("Json Payload " + payload);
+
+        final String resp = fcmHttpConnection(SERVER_KEY, payload);
+    }
+
+    private static String fcmHttpConnection(String serverToken, JSONObject jsonObject) {
         // do a payload
         try {
             URL url = new URL("https://fcm.googleapis.com/fcm/send");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Authorization", SERVER_KEY);
+            connection.setRequestProperty("Authorization",serverToken);
             connection.setDoOutput(true);
+
             OutputStream outputStream = connection.getOutputStream();
-            outputStream.write(payload.toString().getBytes());
+            outputStream.write(jsonObject.toString().getBytes());
             outputStream.close();
+
+            // Read FCM response.
+            InputStream inputStream = connection.getInputStream();
+            return convertStreamToString(inputStream);
         } catch (IOException e) {
+            return "NULL";
+        }
+    }
+
+    private static String convertStreamToString(InputStream inputStream) {
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String len;
+            while ((len = bufferedReader.readLine()) != null) {
+                stringBuilder.append(len);
+            }
+            bufferedReader.close();
+            return stringBuilder.toString().replace(",", ",\n");
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
     }
 
     /**
