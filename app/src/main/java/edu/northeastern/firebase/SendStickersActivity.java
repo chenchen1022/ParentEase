@@ -172,7 +172,7 @@ public class SendStickersActivity extends AppCompatActivity {
         });
 
         // Gets the server key
-        SERVER_KEY = "key=" + getProperties(this).getProperty("SERVER_KEY");
+        SERVER_KEY = "key=" + MiscellaneousUtil.getProperties(this).getProperty("SERVER_KEY");
     }
 
     private void onStickersCollectedButton() {
