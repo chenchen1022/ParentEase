@@ -35,7 +35,7 @@
             android:id="@+id/fromUserItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="from"
+            android:text="Sender"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@id/receviedStickersRV"
             app:layout_constraintEnd_toStartOf="@id/sendTimesItem"
