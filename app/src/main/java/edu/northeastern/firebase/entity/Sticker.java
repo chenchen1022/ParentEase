@@ -1,4 +1,4 @@
-package edu.northeastern.firebase;
+package edu.northeastern.firebase.entity;
 
 /**
  * The class that represents a Sticker item.
@@ -6,10 +6,10 @@ package edu.northeastern.firebase;
  * @author Manping Zhao
  */
 public class Sticker {
-    public String sender;
-    public String receiver;
-    public String timeStamp;
-    public String stickerDes;
+    private String sender;
+    private String receiver;
+    private String timeStamp;
+    private String stickerDes;
 
     /**
      * Non-argument constructor of the class.

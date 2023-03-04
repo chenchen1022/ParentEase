@@ -2,8 +2,6 @@ package edu.northeastern.firebase.entity;
 
 import java.util.List;
 
-import edu.northeastern.firebase.Sticker;
-
 /**
  * The class for the user entity.
  *
@@ -77,5 +75,20 @@ public class User {
      */
     public List<Sticker> getStickersReceived() {
         return stickersReceived;
+    }
+
+    /**
+     * Returns a string representation of the class.
+     *
+     * @return a string representation of the class
+     */
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", userToken='" + userToken + '\'' +
+                ", stickersSent=" + stickersSent +
+                ", stickersReceived=" + stickersReceived +
+                '}';
     }
 }

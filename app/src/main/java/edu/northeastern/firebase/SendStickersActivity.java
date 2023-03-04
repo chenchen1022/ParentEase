@@ -16,6 +16,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 
 import edu.northeastern.atyourservice.R;
+import edu.northeastern.firebase.entity.Sticker;
+import edu.northeastern.firebase.entity.User;
 import edu.northeastern.firebase.utils.MiscellaneousUtil;
 
 /**
@@ -41,6 +50,17 @@ import edu.northeastern.firebase.utils.MiscellaneousUtil;
  */
 public class SendStickersActivity extends AppCompatActivity {
     // Declares fields.
+    private static final String WEATHER_ICON_CLEAR = "WEATHER_ICON_CLEAR";
+    private static final String WEATHER_ICON_CLOUDS = "WEATHER_ICON_CLOUDS";
+    private static final String WEATHER_ICON_RAIN = "WEATHER_ICON_RAIN";
+    private static final String WEATHER_ICON_DRIZZLE = "WEATHER_ICON_DRIZZLE";
+    private static final String WEATHER_ICON_RAINBOW = "WEATHER_ICON_RAINBOW";
+    private static final String WEATHER_ICON_SMOG = "WEATHER_ICON_SMOG";
+    private static final String WEATHER_ICON_SNOW = "WEATHER_ICON_SNOW";
+    private static final String WEATHER_ICON_BOLT = "WEATHER_ICON_BOLT";
+    private static final String SENT_COUNT = "Sent count: ";
+
+
     private static String SERVER_KEY;
     private static final int INITIAL_COUNT = 0;
 
@@ -54,10 +74,15 @@ public class SendStickersActivity extends AppCompatActivity {
     private String userName;
     private String otherUserName;
 
+    private DatabaseReference mDatabase;
+    User currentUser;
+
     private List<ImageView> imageViewList;
     private List<TextView> textViewList;
-    private Map<ImageView, TextView> imageToTextMap;
-    private Map<ImageView, Integer> imageToSendCountMap;
+    private List<String> imageStringList;
+
+    private Map<String, TextView> imageToTextView;
+    private Map<String, Integer> imageToSendCount;
     private Map<View, Boolean> clickedImageMap;
 
     private DatabaseReference myDB = FirebaseDatabase.getInstance().getReference();
@@ -77,6 +102,8 @@ public class SendStickersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_stickers);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         createNotificationChannel();
 
         // Binds widgets from the layout to the fields.
@@ -85,10 +112,9 @@ public class SendStickersActivity extends AppCompatActivity {
         submitBtn = findViewById(R.id.submitBtn);
         sentHistoryBtn = findViewById(R.id.sentHistoryBtn);
 
-        imageToTextMap = new HashMap<>();
-        imageToSendCountMap = new HashMap<>();
+        imageToTextView = new HashMap<>();
+        imageToSendCount = new HashMap<>();
         clickedImageMap = new HashMap<>();
-        initializeImageViewsAndTextViews();
 
         // Gets the current user name from the intent.
         Bundle extras = getIntent().getExtras();
@@ -103,6 +129,9 @@ public class SendStickersActivity extends AppCompatActivity {
             Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
             startActivity(intent);
         });
+
+        initializeImageViewsAndTextViews();
+        syncData();
 
         // Gets the server key
         SERVER_KEY = "key=" + MiscellaneousUtil.getProperties(this).getProperty("SERVER_KEY");
@@ -154,17 +183,20 @@ public class SendStickersActivity extends AppCompatActivity {
 
         // Initializes image and view maps.
         imageViewList = Arrays.asList(image1, image2, image3, image4, image5, image6, image7, image8);
+        imageStringList = Arrays.asList("WEATHER_ICON_CLEAR", "WEATHER_ICON_CLOUDS", "WEATHER_ICON_RAIN", "WEATHER_ICON_DRIZZLE", "WEATHER_ICON_RAINBOW", "WEATHER_ICON_SMOG", "WEATHER_ICON_SNOW",
+                "WEATHER_ICON_BOLT");
         textViewList = Arrays.asList(textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8);
         for (int i = 0; i < imageViewList.size(); i++) {
             ImageView curImageView = imageViewList.get(i);
-            TextView curTextView = textViewList.get(i);
-
             curImageView.setClickable(true);
-            imageToTextMap.put(curImageView, curTextView);
-            curImageView.setOnClickListener(view -> handleImageClick(view));
-            imageToSendCountMap.put(curImageView, INITIAL_COUNT);
+            curImageView.setOnClickListener(view -> onImageClick(view));
 
-            curTextView.setText(curTextView.getText().toString() + imageToSendCountMap.get(curImageView));
+            TextView curTextView = textViewList.get(i);
+            String curImageString = imageStringList.get(i);
+            imageToTextView.put(curImageString, curTextView);
+            imageToSendCount.put(curImageString, INITIAL_COUNT);
+
+            curTextView.setText(SENT_COUNT + imageToSendCount.get(curImageView));
         }
     }
 
@@ -173,7 +205,7 @@ public class SendStickersActivity extends AppCompatActivity {
      *
      * @param view the image view that is clicked
      */
-    private void handleImageClick(View view) {
+    private void onImageClick(View view) {
         // If the clicked view is in the clicked status, restore its status.
         if (clickedImageMap.size() != 0 && clickedImageMap.get(view) != null) {
             ((ImageView) view).setColorFilter(null);
@@ -190,11 +222,45 @@ public class SendStickersActivity extends AppCompatActivity {
         clickedImageMap.put(view, true);
     }
 
-    private void updateSendCount() {
-        for (int i = 0; i < imageViewList.size(); i++) {
-            ImageView curImageView = imageViewList.get(i);
-            TextView curTextView = textViewList.get(i);
-            curTextView.setText("Send count: " + imageToSendCountMap.get(curImageView));
+    /**
+     * Fetches data from database and creates the current user and syncs the fields of the current user.
+     */
+    private void syncData() {
+        // Reference: https://firebase.google.com/docs/database/android/read-and-write#read_once_using_get
+        mDatabase.child("users").child(userName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(SendStickersActivity.this, "Registration failed: failed to get token.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                // Retrieves the info from the response and create the user accordingly.
+                currentUser = task.getResult().getValue(User.class);
+            }
+        });
+    }
+
+    private void updateSpinner() {
+    }
+
+    /**
+     * This method should be triggered by the spinner.
+     * Updates the send count for text views.
+     */
+    private void updateSendCount(String receiverName) {
+        for (Sticker sticker : currentUser.getStickersSent()) {
+            if (sticker.getReceiver().equals(receiverName)) {
+                String currentImageString = sticker.getStickerDes();
+                imageToSendCount.put(currentImageString, imageToSendCount.getOrDefault(currentImageString, 0) + 1);
+            }
+        }
+
+        for (String currentImageString : imageToSendCount.keySet()) {
+            TextView currentTextView = imageToTextView.get(currentImageString);
+            Integer currentCount = imageToSendCount.get(currentImageString);
+
+            currentTextView.setText(SENT_COUNT + currentCount);
         }
     }
 
