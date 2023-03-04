@@ -94,7 +94,7 @@ public class SendStickersActivity extends AppCompatActivity {
     private Map<View, String> clickedImageMap;
 
     private DatabaseReference myDB = FirebaseDatabase.getInstance().getReference();
-    private ArrayList<String> spinnerList = new ArrayList<>(); //holds all users available to send stikcer to
+    private ArrayList<String> spinnerList = new ArrayList<>(); //holds all users available to send stickers to
     private ArrayAdapter<String> adapter;
 
     /**
@@ -138,6 +138,7 @@ public class SendStickersActivity extends AppCompatActivity {
                 if (receiverName.strip().length() == 0) {
                     return;
                 }
+                System.out.println("here usersSpinner.setOnItemSelectedListener****");
                 updateSendCount(receiverName);
             }
 
@@ -176,25 +177,25 @@ public class SendStickersActivity extends AppCompatActivity {
     }
 
     /**
-     * Get a list of users from DB and show in the spiner view
+     * Get a list of users from DB and show in the spinner view.
      */
     private void spinnerShowData() {
-        myDB.child("users").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                spinnerList.clear();
-                for (DataSnapshot item : snapshot.getChildren()) {
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(SendStickersActivity.this, "Failed to fetch data.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                DataSnapshot result = task.getResult();
+                for (DataSnapshot item : result.getChildren()) {
                     spinnerList.add(item.child("userName").getValue(String.class));
                 }
 
                 adapter = new ArrayAdapter<String>(SendStickersActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerList);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 usersSpinner.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
@@ -300,17 +301,18 @@ public class SendStickersActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Retrieves the info from the response and create the user accordingly.
+                // Retrieves the info from the response and creates the user accordingly.
                 currentUser = task.getResult().getValue(User.class);
             }
         });
     }
 
     /**
-     * This method should be triggered by the spinner.
      * Updates the send count for text views.
      */
     private void updateSendCount(String receiverName) {
+        imageToSendCount.clear();
+        resetSendCount();
         for (Sticker sticker : currentUser.getStickersSent()) {
             if (sticker.getReceiver().equals(receiverName)) {
                 String currentImageString = sticker.getStickerDes();
@@ -322,7 +324,16 @@ public class SendStickersActivity extends AppCompatActivity {
             TextView currentTextView = imageToTextView.get(currentImageString);
             Integer currentCount = imageToSendCount.get(currentImageString);
 
+            System.out.println(currentImageString + " " + currentCount);
+
             currentTextView.setText(SENT_COUNT + currentCount);
+        }
+    }
+
+    private void resetSendCount() {
+        for (String currentImageString : imageToTextView.keySet()) {
+            TextView currentTextView = imageToTextView.get(currentImageString);
+            currentTextView.setText(SENT_COUNT + INITIAL_COUNT);
         }
     }
 
@@ -389,7 +400,7 @@ public class SendStickersActivity extends AppCompatActivity {
             clickedImageString = str;
         }
 
-        // Adds the current sticker to the sender and receiver.
+        // Adds the current sticker to the sender and receiver's stickers list.
         Sticker newSticker = new Sticker(currentUser.getUserName(), receiverName, timeStamp, clickedImageString);
         currentUser.getStickersSent().add(newSticker);
         mDatabase.child("users").child(currentUser.getUserName()).setValue(currentUser);
@@ -405,6 +416,10 @@ public class SendStickersActivity extends AppCompatActivity {
                 User receiver = task.getResult().getValue(User.class);
                 receiver.getStickersReceived().add(newSticker);
                 mDatabase.child("users").child(receiverName).setValue(receiver);
+
+                System.out.println("here onSubmitButtonClicked****");
+                updateSendCount(receiverName);
+                Toast.makeText(SendStickersActivity.this, "Image sent successfully.", Toast.LENGTH_LONG).show();
             }
         });
     }
