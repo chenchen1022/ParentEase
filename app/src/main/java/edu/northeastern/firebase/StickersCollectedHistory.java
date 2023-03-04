@@ -21,7 +21,7 @@ import edu.northeastern.atyourservice.R;
  */
 public class StickersCollectedHistory extends AppCompatActivity {
 
-    private List<Stickers> stickersList;
+    private List<Sticker> stickersList;
     private String userName;
     private DatabaseReference myDatabase;
 

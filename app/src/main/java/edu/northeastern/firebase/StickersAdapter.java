@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import edu.northeastern.atyourservice.R;
-import edu.northeastern.firebase.Stickers;
+import edu.northeastern.firebase.Sticker;
 import edu.northeastern.firebase.StickersHolder;
 
 /**
@@ -17,14 +17,14 @@ import edu.northeastern.firebase.StickersHolder;
  * @author Manping Zhao
  */
 public class StickersAdapter extends RecyclerView.Adapter<StickersHolder> {
-    private List<Stickers> stickersList;
+    private List<Sticker> stickersList;
 
     /**
      * Constructor for the class.
      *
      * @param stickers the sticker list
      */
-    public StickersAdapter(List<Stickers> stickers) {
+    public StickersAdapter(List<Sticker> stickers) {
         this.stickersList = stickers;
     }
 
@@ -51,9 +51,9 @@ public class StickersAdapter extends RecyclerView.Adapter<StickersHolder> {
      */
     @Override
     public void onBindViewHolder(StickersHolder holder,int position) {
-        Stickers currentItem = stickersList.get(position);
-        holder.fromUser.setText(currentItem.getFromUser());
-        holder.sendTime.setText(currentItem.getSendTime());
+        Sticker currentItem = stickersList.get(position);
+        holder.fromUser.setText(currentItem.getSender());
+        holder.sendTime.setText(currentItem.getTimeStamp());
 
         String stickersDesc = currentItem.getStickerDes();
         int resId = getStickerIcon(stickersDesc);

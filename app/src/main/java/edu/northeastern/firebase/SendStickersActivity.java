@@ -1,7 +1,9 @@
 package edu.northeastern.firebase;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.app.NotificationChannel;
@@ -9,11 +11,19 @@ import android.app.NotificationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +60,10 @@ public class SendStickersActivity extends AppCompatActivity {
     private Map<ImageView, Integer> imageToSendCountMap;
     private Map<View, Boolean> clickedImageMap;
 
+    private DatabaseReference myDB = FirebaseDatabase.getInstance().getReference();
+    private ArrayList<String> spinnerList = new ArrayList<>(); //holds all users available to send stikcer to
+    private ArrayAdapter<String> adapter;
+
     /**
      * The onCreate method called when the activity is starting.
      *
@@ -81,8 +95,42 @@ public class SendStickersActivity extends AppCompatActivity {
         userName = extras.getString("userName");
         userNameTv.setText("Name: " + userName);
 
+        //get user list for the spinner View
+        spinnerShowData();
+
+        //When click sent history, go to sentHistory Activity
+        sentHistoryBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(this, StickersCollectedHistory.class);
+            startActivity(intent);
+        });
+
         // Gets the server key
         SERVER_KEY = "key=" + MiscellaneousUtil.getProperties(this).getProperty("SERVER_KEY");
+    }
+
+    /**
+     * Get a list of users from DB and show in the spiner view
+     */
+    private void spinnerShowData() {
+        myDB.child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                spinnerList.clear();
+                for (DataSnapshot item: snapshot.getChildren()) {
+                    spinnerList.add(item.child("userName").getValue(String.class));
+                    System.out.println(item.child("userName").getValue(String.class));
+                }
+
+                adapter = new ArrayAdapter<String>(SendStickersActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerList);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                usersSpinner.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void initializeImageViewsAndTextViews() {
