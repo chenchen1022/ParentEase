@@ -30,14 +30,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import edu.northeastern.atyourservice.R;
 import edu.northeastern.firebase.entity.Sticker;
@@ -63,6 +60,7 @@ public class SendStickersActivity extends AppCompatActivity {
     private static final String WEATHER_ICON_BOLT = "WEATHER_ICON_BOLT";
     private static final String SENT_COUNT = "Sent count: ";
 
+
     private static String SERVER_KEY;
     private static final int INITIAL_COUNT = 0;
 
@@ -85,9 +83,7 @@ public class SendStickersActivity extends AppCompatActivity {
 
     private Map<String, TextView> imageToTextView;
     private Map<String, Integer> imageToSendCount;
-    private Map<View, String> clickedImageMap;
-    private ImageView clickedImage;
-    private String clickedImageString;
+    private Map<View, Boolean> clickedImageMap;
 
     private DatabaseReference myDB = FirebaseDatabase.getInstance().getReference();
     private ArrayList<String> spinnerList = new ArrayList<>(); //holds all users available to send stikcer to
@@ -287,6 +283,9 @@ public class SendStickersActivity extends AppCompatActivity {
         });
     }
 
+    private void updateSpinner() {
+    }
+
     /**
      * This method should be triggered by the spinner.
      * Updates the send count for text views.
@@ -305,6 +304,85 @@ public class SendStickersActivity extends AppCompatActivity {
 
             currentTextView.setText(SENT_COUNT + currentCount);
         }
+    }
+
+    /**
+     * Handles the click of the submit button.
+     *
+     * @param receiverName the receiver name
+     */
+    private void onSubmitButtonClicked(String receiverName) {
+        String timeStamp = MiscellaneousUtil.getTimeStamp();
+        String clickedImageString = "";
+        for (String str : clickedImageMap.values()) {
+            clickedImageString = str;
+        }
+
+        // Adds the current sticker to the sender and receiver.
+        Sticker newSticker = new Sticker(currentUser.getUserName(), receiverName, timeStamp, clickedImageString);
+        currentUser.getStickersSent().add(newSticker);
+        mDatabase.child("users").child(currentUser.getUserName()).setValue(currentUser);
+
+        mDatabase.child("users").child(receiverName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(SendStickersActivity.this, "Failed to send the image.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                User receiver = task.getResult().getValue(User.class);
+                receiver.getStickersReceived().add(newSticker);
+                mDatabase.child("users").child(receiverName).setValue(receiver);
+            }
+        });
+    }
+
+    /**
+     * Do a payload when send message to other user.
+     *
+     * @param targetUserName the target user name
+     * @param sticker the sticker will sent to other user
+     */
+    private void sendMessageToOtherUser(String targetUserName, Sticker sticker) {
+        System.out.println("targetUserName: " + targetUserName);
+        System.out.println("stickerSentFrom: " + sticker.getSender());
+
+        // Get notification json file
+        JSONObject notification = new JSONObject();
+        JSONObject data = new JSONObject();
+        JSONObject payload = new JSONObject();
+
+        String notificationTitle = "New sticker from" + sticker.getSender();
+        String notificationBody = sticker.getStickerDes();
+
+        try {
+            notification.put("title", notificationTitle);
+            notification.put("body", notificationBody);
+            data.put("title:", "data:" + notificationTitle);
+            data.put("body", "data:" + notificationBody);
+            payload.put("to", targetUserName);
+            payload.put("priority", "high");
+            payload.put("notification", notification);
+            payload.put("data", data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // do a payload
+        try {
+            URL url = new URL("https://fcm.googleapis.com/fcm/send");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Authorization", sticker.getSender());
+            OutputStream outputStream = connection.getOutputStream();
+            outputStream.write(payload.toString().getBytes());
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
