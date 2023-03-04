@@ -184,6 +184,7 @@ public class SendStickersActivity extends AppCompatActivity {
         Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable("currentUser", currentUser);
+        System.out.println("user sent: " + currentUser);
         intent.putExtras(bundle);
         startActivity(intent);
     }
