@@ -1,5 +1,7 @@
 package edu.northeastern.firebase;
 
+import static edu.northeastern.firebase.utils.MiscellaneousUtil.getProperties;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -172,7 +174,7 @@ public class SendStickersActivity extends AppCompatActivity {
         });
 
         // Gets the server key
-        SERVER_KEY = "key=" + MiscellaneousUtil.getProperties(this).getProperty("SERVER_KEY");
+        SERVER_KEY = "key=" + getProperties(this).getProperty("SERVER_KEY");
     }
 
     /**
@@ -327,6 +329,44 @@ public class SendStickersActivity extends AppCompatActivity {
     }
 
     /**
+     * Handles the click of the submit button.
+     *
+     * @param receiverName the receiver name
+     */
+    private void onSubmitButtonClicked(String receiverName) {
+        if (clickedImageMap.size() == 0) {
+            Toast.makeText(this, "Please select an image.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String timeStamp = MiscellaneousUtil.getTimeStamp();
+        String clickedImageString = "";
+        for (String str : clickedImageMap.values()) {
+            clickedImageString = str;
+        }
+
+        // Adds the current sticker to the sender and receiver.
+        Sticker newSticker = new Sticker(currentUser.getUserName(), receiverName, timeStamp, clickedImageString);
+        currentUser.getStickersSent().add(newSticker);
+        mDatabase.child("users").child(currentUser.getUserName()).setValue(currentUser);
+
+        mDatabase.child("users").child(receiverName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(SendStickersActivity.this, "Failed to send the image.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                User receiver = task.getResult().getValue(User.class);
+                receiver.getStickersReceived().add(newSticker);
+                mDatabase.child("users").child(receiverName).setValue(receiver);
+                sendMessageToOtherUser(receiverName, newSticker);
+            }
+        });
+    }
+
+    /**
      * Do a payload when send message to other user.
      *
      * @param targetUserName the target user name
@@ -363,50 +403,14 @@ public class SendStickersActivity extends AppCompatActivity {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Authorization", sticker.getSender());
+            connection.setRequestProperty("Authorization",SERVER_KEY);
+            connection.setDoOutput(true);
             OutputStream outputStream = connection.getOutputStream();
             outputStream.write(payload.toString().getBytes());
             outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Handles the click of the submit button.
-     *
-     * @param receiverName the receiver name
-     */
-    private void onSubmitButtonClicked(String receiverName) {
-        if (clickedImageMap.size() == 0) {
-            Toast.makeText(this, "Please select an image.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        String timeStamp = MiscellaneousUtil.getTimeStamp();
-        String clickedImageString = "";
-        for (String str : clickedImageMap.values()) {
-            clickedImageString = str;
-        }
-
-        // Adds the current sticker to the sender and receiver.
-        Sticker newSticker = new Sticker(currentUser.getUserName(), receiverName, timeStamp, clickedImageString);
-        currentUser.getStickersSent().add(newSticker);
-        mDatabase.child("users").child(currentUser.getUserName()).setValue(currentUser);
-
-        mDatabase.child("users").child(receiverName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Toast.makeText(SendStickersActivity.this, "Failed to send the image.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                User receiver = task.getResult().getValue(User.class);
-                receiver.getStickersReceived().add(newSticker);
-                mDatabase.child("users").child(receiverName).setValue(receiver);
-            }
-        });
     }
 
     /**
