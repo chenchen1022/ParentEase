@@ -1,5 +1,10 @@
 package edu.northeastern.firebase.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 /**
@@ -8,7 +13,7 @@ import java.util.List;
  * @author Chen Chen
  * @author Shichang Ye
  */
-public class User {
+public class User implements Parcelable {
     // User name needs to be unique.
     private String userName;
 
@@ -40,6 +45,23 @@ public class User {
         this.stickersSent = stickersSent;
         this.stickersReceived = stickersReceived;
     }
+
+    protected User(Parcel in) {
+        userName = in.readString();
+        userToken = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     /**
      * Gets the user name.
@@ -90,5 +112,16 @@ public class User {
                 ", stickersSent=" + stickersSent +
                 ", stickersReceived=" + stickersReceived +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(userName);
+        dest.writeString(userToken);
     }
 }

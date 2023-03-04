@@ -67,6 +67,4 @@ public class Sticker {
     public String getStickerDes() {
         return stickerDes;
     }
-
-
 }

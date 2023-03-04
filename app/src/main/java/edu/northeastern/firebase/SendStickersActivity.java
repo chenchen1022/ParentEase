@@ -11,6 +11,7 @@ import android.app.NotificationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,6 +31,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -83,7 +91,7 @@ public class SendStickersActivity extends AppCompatActivity {
 
     private Map<String, TextView> imageToTextView;
     private Map<String, Integer> imageToSendCount;
-    private Map<View, Boolean> clickedImageMap;
+    private Map<View, String> clickedImageMap;
 
     private DatabaseReference myDB = FirebaseDatabase.getInstance().getReference();
     private ArrayList<String> spinnerList = new ArrayList<>(); //holds all users available to send stikcer to
@@ -123,6 +131,21 @@ public class SendStickersActivity extends AppCompatActivity {
 
         //get user list for the spinner View
         spinnerShowData();
+        usersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String receiverName = usersSpinner.getSelectedItem().toString();
+                if (receiverName.strip().length() == 0) {
+                    return;
+                }
+                updateSendCount(receiverName);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         //When click sent history, go to sentHistory Activity
         sentHistoryBtn.setOnClickListener(view -> {
@@ -283,9 +306,6 @@ public class SendStickersActivity extends AppCompatActivity {
         });
     }
 
-    private void updateSpinner() {
-    }
-
     /**
      * This method should be triggered by the spinner.
      * Updates the send count for text views.
@@ -307,42 +327,10 @@ public class SendStickersActivity extends AppCompatActivity {
     }
 
     /**
-     * Handles the click of the submit button.
-     *
-     * @param receiverName the receiver name
-     */
-    private void onSubmitButtonClicked(String receiverName) {
-        String timeStamp = MiscellaneousUtil.getTimeStamp();
-        String clickedImageString = "";
-        for (String str : clickedImageMap.values()) {
-            clickedImageString = str;
-        }
-
-        // Adds the current sticker to the sender and receiver.
-        Sticker newSticker = new Sticker(currentUser.getUserName(), receiverName, timeStamp, clickedImageString);
-        currentUser.getStickersSent().add(newSticker);
-        mDatabase.child("users").child(currentUser.getUserName()).setValue(currentUser);
-
-        mDatabase.child("users").child(receiverName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Toast.makeText(SendStickersActivity.this, "Failed to send the image.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                User receiver = task.getResult().getValue(User.class);
-                receiver.getStickersReceived().add(newSticker);
-                mDatabase.child("users").child(receiverName).setValue(receiver);
-            }
-        });
-    }
-
-    /**
      * Do a payload when send message to other user.
      *
      * @param targetUserName the target user name
-     * @param sticker the sticker will sent to other user
+     * @param sticker        the sticker will sent to other user
      */
     private void sendMessageToOtherUser(String targetUserName, Sticker sticker) {
         System.out.println("targetUserName: " + targetUserName);
@@ -382,7 +370,6 @@ public class SendStickersActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -391,6 +378,11 @@ public class SendStickersActivity extends AppCompatActivity {
      * @param receiverName the receiver name
      */
     private void onSubmitButtonClicked(String receiverName) {
+        if (clickedImageMap.size() == 0) {
+            Toast.makeText(this, "Please select an image.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         String timeStamp = MiscellaneousUtil.getTimeStamp();
         String clickedImageString = "";
         for (String str : clickedImageMap.values()) {
