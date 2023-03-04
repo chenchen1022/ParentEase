@@ -100,7 +100,7 @@ public class SendStickersActivity extends AppCompatActivity {
 
         //When click sent history, go to sentHistory Activity
         sentHistoryBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(this, StickersCollectedHistory.class);
+            Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
             startActivity(intent);
         });
 
