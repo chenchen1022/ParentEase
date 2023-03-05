@@ -30,8 +30,4 @@ public class StickersHolder extends RecyclerView.ViewHolder {
         this.sendTime = itemView.findViewById(R.id.sendTimesItem);
         this.receivedStickers = itemView.findViewById(R.id.receviedStickersRV);
     }
-
-
-
-
 }

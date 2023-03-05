@@ -106,7 +106,7 @@ public class MessagingService extends FirebaseMessagingService {
     }
 
     /**
-     * Send notification method.
+     * Sends notification method.
      *
      * @param remoteMessageNotification remote message notification
      */
@@ -147,7 +147,7 @@ public class MessagingService extends FirebaseMessagingService {
     }
 
     /**
-     * Get sticker id.
+     * Gets the sticker id.
      *
      * @param stickerDes the description of the sticker
      * @return an int which is the sticker id

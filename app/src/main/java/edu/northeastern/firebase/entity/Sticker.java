@@ -6,10 +6,12 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 /**
- * The class that represents a Sticker item.
+ * The class that represents a Sticker item. To make object passing between activities with an
+ * intent possible, the class implements Parcelable.
  *
  * @author Manping Zhao
  * @author Chen Chen
+ * @author Shichang Ye
  */
 public class Sticker implements Parcelable {
     private String sender;

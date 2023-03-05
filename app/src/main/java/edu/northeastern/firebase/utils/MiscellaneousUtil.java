@@ -12,7 +12,7 @@ import java.util.Properties;
 public class MiscellaneousUtil {
     /**
      * Gets the properties from a property document.
-     *      * The demo code of this module - FirebaseDemo3.java is referenced.
+     * The demo code of this module - FirebaseDemo3.java is referenced.
      *
      * @param context the context in which the method is called
      * @return the properties

@@ -75,11 +75,9 @@ public class SendStickersActivity extends AppCompatActivity {
     private Button submitBtn;
     private Button sentHistoryBtn;
 
-    private String userName;
-    private String otherUserName;
-
     private DatabaseReference mDatabase;
     User currentUser;
+    private String userName;
 
     private List<ImageView> imageViewList;
     private List<TextView> textViewList;
@@ -180,7 +178,7 @@ public class SendStickersActivity extends AppCompatActivity {
     }
 
     /**
-     * Get a list of users from DB and show in the spinner view.
+     * Gets a list of users from DB and show in the spinner view.
      */
     private void spinnerShowData() {
         mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -344,7 +342,7 @@ public class SendStickersActivity extends AppCompatActivity {
 
     /**
      * Do a payload when send message to other user.
-     *
+     * <p>
      * Citation: Course Module: Week 8 - Firebase Cloud Messaging & Firebase Realtime Database - Firebase Cloud Messaging Video
      * https://northeastern.instructure.com/courses/136736/pages/firebase-cloud-messaging?module_item_id=8369834
      *
@@ -352,9 +350,6 @@ public class SendStickersActivity extends AppCompatActivity {
      * @param sticker         the sticker will sent to other user
      */
     private void sendMessageToOtherUser(String targetUserToken, Sticker sticker) {
-        System.out.println("targetUserName: " + targetUserToken);
-        System.out.println("stickerSentFrom: " + sticker.getSender());
-
         // Get notification json file
         JSONObject notification = new JSONObject();
         JSONObject data = new JSONObject();
@@ -362,9 +357,6 @@ public class SendStickersActivity extends AppCompatActivity {
 
         String notificationTitle = "New Sticker From " + sticker.getSender();
         String notificationBody = sticker.getStickerDes();
-
-        System.out.println("Notification title: " + notificationTitle);
-        System.out.println("Notification body: " + notificationBody);
 
         try {
             notification.put("title", notificationTitle);
@@ -392,21 +384,16 @@ public class SendStickersActivity extends AppCompatActivity {
 
     /**
      * Get connection with Firebase Cloud Messaging
-     *
+     * <p>
      * Citation: Course Module: Week 8 - Firebase Cloud Messaging & Firebase Realtime Database - Firebase Cloud Messaging Video
      * https://northeastern.instructure.com/courses/136736/pages/firebase-cloud-messaging?module_item_id=8369834
      *
      * @param serverToken the token of the current user
-     * @param jsonObject the payload json file
+     * @param jsonObject  the payload json file
      * @return the FCM response
      */
     private static String fcmHttpConnection(String serverToken, JSONObject jsonObject) {
         // Loads a payload
-
-        System.out.println("Server Token: " + serverToken);
-        System.out.println("Payload Json file: " + jsonObject);
-
-        // do a payload
         try {
             URL url = new URL("https://fcm.googleapis.com/fcm/send");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -428,7 +415,8 @@ public class SendStickersActivity extends AppCompatActivity {
     }
 
     /**
-     * Convert the input stream to string.
+     * Converts the input stream to string.
+     * The demo code of this module - FirebaseDemo3.java is referenced.
      *
      * @param inputStream the input stream need to be converted to string
      * @return input stream string
@@ -492,7 +480,6 @@ public class SendStickersActivity extends AppCompatActivity {
                 receiver.getStickersReceived().add(newSticker);
                 mDatabase.child("users").child(receiverName).setValue(receiver);
 
-                System.out.println("here onSubmitButtonClicked****");
                 updateSendCount(receiverName);
                 Toast.makeText(SendStickersActivity.this, "Image sent successfully.", Toast.LENGTH_LONG).show();
 
@@ -502,8 +489,8 @@ public class SendStickersActivity extends AppCompatActivity {
     }
 
     /**
-     * Create notification channel.
-     *
+     * Creates the notification channel.
+     * <p>
      * Citation: Android Developers / Documentation / UI Guide / Create and manage notification channels
      * https://developer.android.com/develop/ui/views/notifications/channels
      */

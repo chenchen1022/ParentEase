@@ -8,9 +8,11 @@ import androidx.annotation.NonNull;
 import java.util.List;
 
 /**
- * The class for the user entity.
+ * The class for the user entity. To make object passing between activities with an intent possible,
+ * the class implements Parcelable.
  *
  * @author Chen Chen
+ * @author Manping Zhao
  * @author Shichang Ye
  */
 public class User implements Parcelable {
