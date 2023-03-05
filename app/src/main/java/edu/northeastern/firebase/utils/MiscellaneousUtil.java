@@ -6,17 +6,13 @@ import android.content.res.AssetManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
-import java.util.TimeZone;
 
 public class MiscellaneousUtil {
     /**
      * Gets the properties from a property document.
-     * Reference: this part of code comes from the demo code of this module - FirebaseDemo3.java.
+     *      * The demo code of this module - FirebaseDemo3.java is referenced.
      *
      * @param context the context in which the method is called
      * @return the properties
@@ -38,6 +34,8 @@ public class MiscellaneousUtil {
      * Gets the time stamp.
      *
      * @return the time stamp
+     *
+     * @author Shichang Ye
      */
     public static String getTimeStamp() {
         Calendar calendar = Calendar.getInstance();

@@ -9,12 +9,11 @@ import java.net.URL;
 
 /**
  * A network utility class.
- *
- * @Author Shichang Ye
  */
 public final class NetworkUtil {
     /**
      * Converts an input stream to a string.
+     * The demo code of this module - FirebaseDemo3.java is referenced.
      *
      * @param inputStream the input stream
      * @return a string converted from the input steam
@@ -40,6 +39,7 @@ public final class NetworkUtil {
 
     /**
      * Gets and converts the response of making a get request on the url provided.
+     * The demo code of this module - FirebaseDemo3.java is referenced.
      *
      * @param url the url to be requested
      * @return a string representation of the response form the http request

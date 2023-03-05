@@ -1,7 +1,5 @@
 package edu.northeastern.firebase;
 
-import static edu.northeastern.firebase.utils.MiscellaneousUtil.getProperties;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +10,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,12 +24,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,9 +49,9 @@ import edu.northeastern.firebase.utils.MiscellaneousUtil;
 /**
  * The class for Send Stickers Activity.
  *
- * @author ShiChang Ye
  * @author Chen Chen
  * @author Lin Han
+ * @author ShiChang Ye
  */
 public class SendStickersActivity extends AppCompatActivity {
     // Declares fields.
@@ -89,7 +80,6 @@ public class SendStickersActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     User currentUser;
-    User otherUser;
 
     private List<ImageView> imageViewList;
     private List<TextView> textViewList;
@@ -152,7 +142,7 @@ public class SendStickersActivity extends AppCompatActivity {
             }
         });
 
-        //When click sent history, go to sentHistory Activity
+        // When clicking sent history, go to sentHistory Activity
         sentHistoryBtn.setOnClickListener(view -> {
             onStickersCollectedButton();
         });
@@ -174,7 +164,7 @@ public class SendStickersActivity extends AppCompatActivity {
             clickedImageMap.clear();
         });
 
-        // Gets the server key
+        // Gets the server key.
         SERVER_KEY = "key=" + MiscellaneousUtil.getProperties(this).getProperty("SERVER_KEY");
     }
 
@@ -341,9 +331,6 @@ public class SendStickersActivity extends AppCompatActivity {
         for (String currentImageString : imageToSendCount.keySet()) {
             TextView currentTextView = imageToTextView.get(currentImageString);
             Integer currentCount = imageToSendCount.get(currentImageString);
-
-            System.out.println(currentImageString + " " + currentCount);
-
             currentTextView.setText(SENT_COUNT + currentCount);
         }
     }
@@ -400,8 +387,16 @@ public class SendStickersActivity extends AppCompatActivity {
         newThread.start();
     }
 
+    /**
+     * Makes a http connection and converts the response to a string.
+     * The demo code of this module - FirebaseDemo3.java is referenced.
+     *
+     * @param serverToken the server token
+     * @param jsonObject  the json object to be sent
+     * @return a string
+     */
     private static String fcmHttpConnection(String serverToken, JSONObject jsonObject) {
-        // do a payload
+        // Loads a payload
         try {
             URL url = new URL("https://fcm.googleapis.com/fcm/send");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -422,6 +417,12 @@ public class SendStickersActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Converts a stream to a string.
+     *
+     * @param inputStream the input stream
+     * @return a string
+     */
     private static String convertStreamToString(InputStream inputStream) {
         StringBuilder stringBuilder = new StringBuilder();
         try {
@@ -518,6 +519,4 @@ public class SendStickersActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
-
 }
