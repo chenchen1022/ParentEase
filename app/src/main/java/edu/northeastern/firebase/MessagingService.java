@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,8 +37,6 @@ public class MessagingService extends FirebaseMessagingService {
     private List<Sticker> stickersSent;
     private List<Sticker> stickersReceived;
     private DatabaseReference myDataBase;
-    private static final String TAG = "mFirebaseIIDService";
-
     private static final String CHANNEL_ID = "group_18_stick_it_to_em";
     private static final String CHANNEL_NAME = "group_18_stick_it_to_em";
     private static final String CHANNEL_DESCRIPTION = "group_19_stick_it_to_em";
@@ -52,18 +49,16 @@ public class MessagingService extends FirebaseMessagingService {
     public void onCreate() {
         super.onCreate();
         myDataBase = FirebaseDatabase.getInstance().getReference();
-        userToken = Settings.Secure.getString(
-                getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        userToken = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         myDataBase.child("users").child(userToken).get().addOnCompleteListener(task -> {
-            if (!task.isSuccessful()) {
-                Log.e("firebase", "Error getting data", task.getException());
-            } else {
+            if (task.isSuccessful()) {
                 HashMap tempMap = (HashMap) task.getResult().getValue();
                 if (tempMap == null) {
-                    Log.e("firebase", "Empty data");
                     return;
                 }
                 userName = Objects.requireNonNull(tempMap.get("userName")).toString();
+            } else {
+                Log.e("Firebase", "Error", task.getException());
             }
         });
     }
@@ -76,10 +71,7 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
-
-        @SuppressLint("HardwareIds") User user = new User(Settings.Secure.getString(
-                getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID), this.userName, this.stickersSent, this.stickersReceived);
-
+        @SuppressLint("HardwareIds") User user = new User(userToken, userName, stickersSent, stickersReceived);
         myDataBase.child("users").child(userName).setValue(user);
     }
 
@@ -114,9 +106,6 @@ public class MessagingService extends FirebaseMessagingService {
         Intent intent = new Intent(this, SendStickersActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_IMMUTABLE);
-
         Notification notification;
         NotificationCompat.Builder builder;
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
@@ -126,13 +115,8 @@ public class MessagingService extends FirebaseMessagingService {
         notificationManager.createNotificationChannel(notificationChannel);
         builder = new NotificationCompat.Builder(this, CHANNEL_ID);
 
-        System.out.println("notification title: " + remoteMessageNotification.getTitle());
-        System.out.println("notification body: " + remoteMessageNotification.getBody());
-
         String stickerDes = remoteMessageNotification.getBody().toString().substring(13);
-
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getSticker(stickerDes));
-
         notification = builder.setSmallIcon(R.drawable.ic_stat_notification)
                 .setContentTitle(remoteMessageNotification.getTitle())
                 .setContentText("You received a " + stickerDes + " sticker.")
@@ -147,7 +131,7 @@ public class MessagingService extends FirebaseMessagingService {
     }
 
     /**
-     * Gets the sticker id.
+     * Gets sticker id.
      *
      * @param stickerDes the description of the sticker
      * @return an int which is the sticker id
