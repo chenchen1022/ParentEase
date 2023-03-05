@@ -170,6 +170,7 @@ public class SendStickersActivity extends AppCompatActivity {
      * Handles the click of stickers collected button.
      */
     private void onStickersCollectedButton() {
+        syncData();
         Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable("currentUser", currentUser);
