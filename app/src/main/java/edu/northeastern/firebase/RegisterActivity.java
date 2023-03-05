@@ -35,7 +35,6 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnRegister;
     TextView inputUserName;
     UserDao userDao;
-    User currentUser;
 
     /**
      * The onCreate method called when the activity starts.
@@ -59,27 +58,8 @@ public class RegisterActivity extends AppCompatActivity {
         userDao = new UserDao();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        btnLogin.setOnClickListener(view -> {
-            findCurrentUser();
-
-            if (currentUser == null) {
-                Toast.makeText(this, "No registration found. Click register instead.", Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            loginUser();
-        });
-
-        btnRegister.setOnClickListener(view -> {
-            findCurrentUser();
-
-            if (currentUser != null) {
-                Toast.makeText(this, "You have registered before. Click login instead.", Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            createUser();
-        });
+        btnLogin.setOnClickListener(view -> loginUser());
+        btnRegister.setOnClickListener(view -> createUser());
     }
 
     /**
@@ -93,39 +73,49 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Creates the user based on the user name input.
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-            if (!task.isSuccessful()) {
-                Toast.makeText(this, "Registration failed: failed to get token.", Toast.LENGTH_LONG).show();
-                Log.w("RegisterActivity", "Registration failed: failed to get token.");
+        databaseReference.child("users").child(userName).get().addOnCompleteListener(task1 -> {
+            if (!task1.isSuccessful()) {
+                Toast.makeText(this, "Registration failed. Please retry.", Toast.LENGTH_LONG).show();
                 return;
             }
 
-            // The CLIENT_REGISTRATION_TOKEN can be obtained once the task succeeds. Some initial stickers for
-            // the registered user provided.
-            CLIENT_REGISTRATION_TOKEN = task.getResult();
-            Sticker sticker1 = new Sticker(userName, "John", "2023-03-03", "1");
-            Sticker sticker2 = new Sticker(userName, "Smith", "2023-03-03", "2");
-            Sticker sticker3 = new Sticker("Smith", userName, "2023-03-03", "3");
-            Sticker sticker4 = new Sticker("John", userName, "2023-03-03", "4");
+            User tempUser = task1.getResult().getValue(User.class);
+            if (tempUser != null) {
+                Toast.makeText(this, "Registration found. Click login instead.", Toast.LENGTH_LONG).show();
+                return;
+            }
 
-            List<Sticker> stickersSent = Arrays.asList(sticker1, sticker2);
-            List<Sticker> stickersReceived = Arrays.asList(sticker3, sticker4);
+            // Creates the user based on the user name input.
+            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task2 -> {
+                if (!task2.isSuccessful()) {
+                    Toast.makeText(this, "Registration failed: failed to get token.", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
-            User user = new User(userName, CLIENT_REGISTRATION_TOKEN, stickersSent, stickersReceived);
+                // The CLIENT_REGISTRATION_TOKEN can be obtained once the task succeeds. Some initial stickers for
+                // the registered user provided.
+                CLIENT_REGISTRATION_TOKEN = task2.getResult();
+                Sticker sticker1 = new Sticker(userName, "John", "2023-03-03", "1");
+                Sticker sticker2 = new Sticker(userName, "Smith", "2023-03-03", "2");
+                Sticker sticker3 = new Sticker("Smith", userName, "2023-03-03", "3");
+                Sticker sticker4 = new Sticker("John", userName, "2023-03-03", "4");
+                List<Sticker> stickersSent = Arrays.asList(sticker1, sticker2);
+                List<Sticker> stickersReceived = Arrays.asList(sticker3, sticker4);
+                User user = new User(userName, CLIENT_REGISTRATION_TOKEN, stickersSent, stickersReceived);
 
-            // Calls the create method from userdao to create the new user. --> CC: should be add not create
-            userDao.create(user).addOnSuccessListener(result -> {
-                Toast.makeText(this, "Registered successfully.", Toast.LENGTH_SHORT).show();
-            }).addOnFailureListener(result -> {
-                Toast.makeText(this, result.getMessage(), Toast.LENGTH_LONG).show();
+                // Calls the create method from userdao to create the new user. --> CC: should be add not create
+                userDao.create(user).addOnSuccessListener(result -> {
+                    Toast.makeText(this, "Registered successfully.", Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(result -> {
+                    Toast.makeText(this, result.getMessage(), Toast.LENGTH_LONG).show();
+                });
+
+                // Jumps to SendStickersActivity.
+                Intent intent = new Intent(this, SendStickersActivity.class);
+                intent.putExtra("userName", userName);
+                startActivity(intent);
             });
         });
-
-        // Jumps to SendStickersActivity.
-        Intent intent = new Intent(this, SendStickersActivity.class);
-        intent.putExtra("userName", userName);
-        startActivity(intent);
     }
 
     /**
@@ -141,35 +131,20 @@ public class RegisterActivity extends AppCompatActivity {
 
         databaseReference.child("users").child(userName).get().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
-                Toast.makeText(this, "Login failed.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Login failed. Please retry.", Toast.LENGTH_LONG).show();
                 return;
             }
-        });
 
-        // Jumps to SendStickersActivity.
-        Intent intent = new Intent(this, SendStickersActivity.class);
-        intent.putExtra("userName", userName);
-        startActivity(intent);
-    }
-
-    /**
-     * Checks if the input user name is registered.
-     */
-    private void findCurrentUser() {
-        String userName = inputUserName.getText().toString();
-        if (userName.strip().length() == 0) {
-            Toast.makeText(this, "Invalid! Empty user name.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        databaseReference.child("users").child(userName).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                User tempUser = task.getResult().getValue(User.class);
-
-                if (tempUser != null) {
-                    currentUser = tempUser;
-                }
+            User tempUser = task.getResult().getValue(User.class);
+            if (tempUser == null) {
+                Toast.makeText(this, "No registration found. Click register instead.", Toast.LENGTH_LONG).show();
+                return;
             }
+
+            // Jumps to SendStickersActivity.
+            Intent intent = new Intent(this, SendStickersActivity.class);
+            intent.putExtra("userName", userName);
+            startActivity(intent);
         });
     }
 }
