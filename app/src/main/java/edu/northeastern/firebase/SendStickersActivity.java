@@ -90,6 +90,7 @@ public class SendStickersActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     User currentUser;
+    User otherUser;
 
     private List<ImageView> imageViewList;
     private List<TextView> textViewList;
@@ -145,6 +146,7 @@ public class SendStickersActivity extends AppCompatActivity {
                     return;
                 }
                 System.out.println("here usersSpinner.setOnItemSelectedListener****");
+                System.out.println("other user's user name: " + receiverName);
                 updateSendCount(receiverName);
             }
 
@@ -178,6 +180,7 @@ public class SendStickersActivity extends AppCompatActivity {
 
         // Gets the server key
         SERVER_KEY = "key=" + MiscellaneousUtil.getProperties(this).getProperty("SERVER_KEY");
+
     }
 
     private void onStickersCollectedButton() {
@@ -202,6 +205,7 @@ public class SendStickersActivity extends AppCompatActivity {
                 }
 
                 DataSnapshot result = task.getResult();
+                spinnerList.add("---");
                 for (DataSnapshot item : result.getChildren()) {
                     spinnerList.add(item.child("userName").getValue(String.class));
                 }
@@ -247,7 +251,6 @@ public class SendStickersActivity extends AppCompatActivity {
             String curImageString = imageStringList.get(i);
             imageToTextView.put(curImageString, curTextView);
             imageToSendCount.put(curImageString, INITIAL_COUNT);
-
             curTextView.setText(SENT_COUNT + imageToSendCount.get(curImageView));
         }
     }
@@ -504,4 +507,6 @@ public class SendStickersActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
+
+
 }
