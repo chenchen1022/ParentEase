@@ -59,7 +59,6 @@ public class MessagingService extends FirebaseMessagingService {
             if (task.isSuccessful()) {
                 HashMap tempMap = (HashMap) task.getResult().getValue();
                 if (tempMap == null) {
-                    Log.e("Firebase", "Empty");
                     return;
                 }
                 userName = Objects.requireNonNull(tempMap.get("userName")).toString();
