@@ -315,7 +315,7 @@ public class SendStickersActivity extends AppCompatActivity {
         imageToSendCount.clear();
         resetSendCount();
 
-        if (currentUser == null) {
+        if (currentUser == null || currentUser.getStickersSent() == null || currentUser.getStickersSent().size() == 0) {
             return;
         }
 

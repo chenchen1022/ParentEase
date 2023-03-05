@@ -3,6 +3,7 @@ package edu.northeastern.firebase;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +30,6 @@ import edu.northeastern.firebase.entity.User;
 /**
  * The class for Stickers Received activity.
  *
- * @author ShiChang Ye
  * @author Chen Chen
  * @author Lin Han
  * @author Manping Zhao
@@ -39,9 +39,7 @@ public class StickersCollectedHistory extends AppCompatActivity {
     private List<Sticker> stickersList;
     RecyclerView recyclerView;
     StickersAdapter stickerAdapter;
-    private String userName;
     private User currentUser;
-    private DatabaseReference myDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +52,13 @@ public class StickersCollectedHistory extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         stickersList = new ArrayList<Sticker>();
-        for (Sticker s: currentUser.getStickersReceived()){
-            stickersList.add(s);
+
+        if (currentUser.getStickersReceived() == null || currentUser.getStickersReceived().size() == 0) {
+            Toast.makeText(this, "No history stickers to show.", Toast.LENGTH_LONG).show();
+        } else {
+            for (Sticker s : currentUser.getStickersReceived()) {
+                stickersList.add(s);
+            }
         }
 
         stickerAdapter = new StickersAdapter(stickersList);

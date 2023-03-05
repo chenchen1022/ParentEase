@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
 import java.util.List;
 
 import edu.northeastern.atyourservice.R;
@@ -26,6 +27,7 @@ public class StickersAdapter extends RecyclerView.Adapter<StickersHolder> {
      */
     public StickersAdapter(List<Sticker> stickers) {
         this.stickersList = stickers;
+        stickersList.sort((a, b) -> b.getTimeStamp().compareTo(b.getTimeStamp()));
     }
 
     /**

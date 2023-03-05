@@ -10,52 +10,60 @@
         android:id="@+id/receviedStickers"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_marginTop="10sp"
-        android:layout_marginStart="20sp"
-        android:layout_marginBottom="15sp"
-        app:layout_constraintBottom_toTopOf="@id/fromUser"
+
+        app:layout_constraintBottom_toTopOf="@+id/guideline17"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.023"
+        app:layout_constraintVertical_bias="0.5"
         app:srcCompat="@drawable/weather_icon_clouds" />
 
     <TextView
         android:id="@+id/sendTimes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send time"
+        android:text="Received time"
         android:textColorHighlight="@color/cardview_shadow_start_color"
         android:textSize="20sp"
-        android:layout_marginTop="15sp"
-        android:layout_marginBottom="15sp"
-        app:layout_constraintBottom_toTopOf="@id/receivedStickersRecyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/fromUser"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/fromUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
         android:text="Sender"
-        android:textSize="20sp"
         android:textColorHighlight="@color/cardview_shadow_start_color"
-        android:layout_marginTop="15sp"
-        android:layout_marginBottom="15sp"
-        app:layout_constraintBottom_toTopOf="@id/receivedStickersRecyclerView"
-        app:layout_constraintEnd_toStartOf="@id/sendTimes"
-        app:layout_constraintStart_toEndOf="@id/receviedStickers"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.034" />
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline17"
+        app:layout_constraintStart_toEndOf="@+id/receviedStickers"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/receivedStickersRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/receviedStickers" />
+        app:layout_constraintTop_toTopOf="@+id/guideline17" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95" />
 </androidx.constraintlayout.widget.ConstraintLayout>

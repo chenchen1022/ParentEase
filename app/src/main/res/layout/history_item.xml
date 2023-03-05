@@ -12,38 +12,40 @@
 
         <ImageView
             android:id="@+id/receviedStickersRV"
-            android:layout_width="35sp"
-            android:layout_height="35sp"
-            android:layout_marginStart="20dp"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:contentDescription="stickerDesc"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/weather_icon_clouds" />
 
         <TextView
             android:id="@+id/sendTimesItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Send time"
-            android:textSize="20sp"
-            android:layout_marginTop="15sp"
-            android:layout_marginBottom="15sp"
+            android:text="Received time"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/fromUserItem"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.85"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
         <TextView
             android:id="@+id/fromUserItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
             android:text="Sender"
-            android:textSize="20sp"
-            android:layout_marginTop="15sp"
-            android:layout_marginBottom="15sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/sendTimesItem"
             app:layout_constraintStart_toEndOf="@id/receviedStickersRV"
             app:layout_constraintTop_toTopOf="parent" />
 
