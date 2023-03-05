@@ -94,10 +94,10 @@ public class RegisterActivity extends AppCompatActivity {
                 // The CLIENT_REGISTRATION_TOKEN can be obtained once the task succeeds. Some initial stickers for
                 // the registered user provided.
                 CLIENT_REGISTRATION_TOKEN = task2.getResult();
-                Sticker sticker1 = new Sticker(userName, "John", "2023-03-03", "1");
-                Sticker sticker2 = new Sticker(userName, "Smith", "2023-03-03", "2");
-                Sticker sticker3 = new Sticker("Smith", userName, "2023-03-03", "3");
-                Sticker sticker4 = new Sticker("John", userName, "2023-03-03", "4");
+                Sticker sticker1 = new Sticker(userName, "Stephen Chow", "2023-03-03 00:00:00", "WEATHER_ICON_SNOW");
+                Sticker sticker2 = new Sticker(userName, "Tom Hanks", "2023-03-03 00:00:01", "WEATHER_ICON_SNOW");
+                Sticker sticker3 = new Sticker("Julia Roberts", userName, "2023-03-03 00:00:03", "WEATHER_ICON_RAINBOW");
+                Sticker sticker4 = new Sticker("Anne Hathaway", userName, "2023-03-03 00:00:04", "WEATHER_ICON_RAINBOW");
                 List<Sticker> stickersSent = Arrays.asList(sticker1, sticker2);
                 List<Sticker> stickersReceived = Arrays.asList(sticker3, sticker4);
                 User user = new User(userName, CLIENT_REGISTRATION_TOKEN, stickersSent, stickersReceived);
