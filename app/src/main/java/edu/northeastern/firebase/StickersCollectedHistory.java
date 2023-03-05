@@ -48,10 +48,6 @@ public class StickersCollectedHistory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stickers_received_history);
         currentUser = getIntent().getExtras().getParcelable("currentUser");
-        System.out.println(currentUser);
-        System.out.println("Here I am");
-
-        //System.out.println(currUser);
 
         recyclerView = findViewById(R.id.receivedStickersRecyclerView);
         recyclerView.setHasFixedSize(true);

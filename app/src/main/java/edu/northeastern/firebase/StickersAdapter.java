@@ -37,9 +37,9 @@ public class StickersAdapter extends RecyclerView.Adapter<StickersHolder> {
      * @return a new stickerHolder
      */
     @Override
-    public StickersHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public StickersHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new StickersHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.history_item, parent,false));
+                .inflate(R.layout.history_item, parent, false));
     }
 
     /**
@@ -50,7 +50,7 @@ public class StickersAdapter extends RecyclerView.Adapter<StickersHolder> {
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(StickersHolder holder,int position) {
+    public void onBindViewHolder(StickersHolder holder, int position) {
         Sticker currentItem = stickersList.get(position);
         holder.fromUser.setText(currentItem.getSender());
         holder.sendTime.setText(currentItem.getTimeStamp());
@@ -79,30 +79,30 @@ public class StickersAdapter extends RecyclerView.Adapter<StickersHolder> {
     private int getStickerIcon(String stickerDesc) {
         int resId = R.drawable.weather_icon_clear;
         switch (stickerDesc) {
-            case "Clouds":
+            case "WEATHER_ICON_CLOUDS":
                 resId = R.drawable.weather_icon_clouds;
                 break;
-            case "Smog":
+            case "WEATHER_ICON_SMOG":
                 resId = R.drawable.weather_icon_smog;
                 break;
-            case "Drizzle":
+            case "WEATHER_ICON_DRIZZLE":
                 resId = R.drawable.weather_icon_drizzle;
                 break;
-            case "Rain":
+            case "WEATHER_ICON_RAIN":
                 resId = R.drawable.weather_icon_rain;
                 break;
-            case "Snow":
+            case "WEATHER_ICON_SNOW":
                 resId = R.drawable.weather_icon_snow;
                 break;
-            case "Rainbow":
+            case "WEATHER_ICON_RAINBOW":
                 resId = R.drawable.weather_icon_rainbow;
                 break;
-            case "Bolt":
+            case "WEATHER_ICON_BOLT":
                 resId = R.drawable.weather_icon_bolt;
             default:
         }
 
         return resId;
-        }
     }
+}
 
