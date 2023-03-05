@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,13 +12,16 @@ import android.provider.Settings;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
 import edu.northeastern.atyourservice.R;
 import edu.northeastern.firebase.entity.Sticker;
 import edu.northeastern.firebase.entity.User;
@@ -37,9 +41,9 @@ public class MessagingService extends FirebaseMessagingService {
     private List<Sticker> stickersSent;
     private List<Sticker> stickersReceived;
     private DatabaseReference myDataBase;
-    private static final String CHANNEL_ID = "group_18_stick_it_to_em";
-    private static final String CHANNEL_NAME = "group_18_stick_it_to_em";
-    private static final String CHANNEL_DESCRIPTION = "group_19_stick_it_to_em";
+    private static final String ID = "group_18_stick_it_to_em";
+    private static final String NAME = "group_18_stick_it_to_em";
+    private static final String DESCRIPTION = "group_18_stick_it_to_em";
 
     /**
      * The onCreate method called when the activity is starting.
@@ -49,11 +53,13 @@ public class MessagingService extends FirebaseMessagingService {
     public void onCreate() {
         super.onCreate();
         myDataBase = FirebaseDatabase.getInstance().getReference();
-        userToken = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        userToken = Settings.Secure.getString(
+                getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         myDataBase.child("users").child(userToken).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 HashMap tempMap = (HashMap) task.getResult().getValue();
                 if (tempMap == null) {
+                    Log.e("Firebase", "Empty");
                     return;
                 }
                 userName = Objects.requireNonNull(tempMap.get("userName")).toString();
@@ -71,7 +77,7 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
-        @SuppressLint("HardwareIds") User user = new User(userToken, userName, stickersSent, stickersReceived);
+        @SuppressLint("HardwareIds") User user = new User(this.userToken, this.userName, this.stickersSent, this.stickersReceived);
         myDataBase.child("users").child(userName).setValue(user);
     }
 
@@ -110,10 +116,10 @@ public class MessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder builder;
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
 
-        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
-        notificationChannel.setDescription(CHANNEL_DESCRIPTION);
+        NotificationChannel notificationChannel = new NotificationChannel(ID,NAME, NotificationManager.IMPORTANCE_HIGH);
+        notificationChannel.setDescription(DESCRIPTION);
         notificationManager.createNotificationChannel(notificationChannel);
-        builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        builder = new NotificationCompat.Builder(this, ID);
 
         String stickerDes = remoteMessageNotification.getBody().toString().substring(13);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getSticker(stickerDes));
