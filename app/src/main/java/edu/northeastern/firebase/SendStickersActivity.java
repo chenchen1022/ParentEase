@@ -508,10 +508,6 @@ public class SendStickersActivity extends AppCompatActivity {
 
             // Set description.
             channel.setDescription(description);
-            channel.enableLights(true);
-
-            // Set color.
-            channel.setLightColor(Color.argb(255, 228, 14, 18));
 
             // Register the channel with the system. You can't change the importance
             // or other notification behaviors after this.
