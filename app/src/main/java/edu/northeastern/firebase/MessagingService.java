@@ -77,8 +77,8 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
-        @SuppressLint("HardwareIds") User user = new User(this.userToken, this.userName, this.stickersSent, this.stickersReceived);
-        myDataBase.child("users").child(userName).setValue(user);
+        @SuppressLint("HardwareIds") User user = new User(token, this.userName, this.stickersSent, this.stickersReceived);
+        myDataBase.child("users").child(this.userName).setValue(user);
     }
 
     /**
