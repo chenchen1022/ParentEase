@@ -25,6 +25,7 @@ import edu.northeastern.firebase.entity.User;
 /**
  * The register activity class that helps register a user.
  *
+ * @author Chen Chen
  * @author ShiChang Ye
  */
 public class RegisterActivity extends AppCompatActivity {
