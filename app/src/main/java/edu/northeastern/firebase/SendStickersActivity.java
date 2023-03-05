@@ -74,7 +74,6 @@ public class SendStickersActivity extends AppCompatActivity {
     private static final String WEATHER_ICON_BOLT = "WEATHER_ICON_BOLT";
     private static final String SENT_COUNT = "Sent count: ";
 
-
     private static String SERVER_KEY;
     private static final int INITIAL_COUNT = 0;
 
@@ -145,14 +144,11 @@ public class SendStickersActivity extends AppCompatActivity {
                 if (receiverName.strip().length() == 0) {
                     return;
                 }
-                System.out.println("here usersSpinner.setOnItemSelectedListener****");
-                System.out.println("other user's user name: " + receiverName);
                 updateSendCount(receiverName);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -180,14 +176,15 @@ public class SendStickersActivity extends AppCompatActivity {
 
         // Gets the server key
         SERVER_KEY = "key=" + MiscellaneousUtil.getProperties(this).getProperty("SERVER_KEY");
-
     }
 
+    /**
+     * Handles the click of stickers collected button.
+     */
     private void onStickersCollectedButton() {
         Intent intent = new Intent(SendStickersActivity.this, StickersCollectedHistory.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable("currentUser", currentUser);
-        System.out.println("user sent: " + currentUser);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -329,6 +326,11 @@ public class SendStickersActivity extends AppCompatActivity {
     private void updateSendCount(String receiverName) {
         imageToSendCount.clear();
         resetSendCount();
+
+        if (currentUser == null) {
+            return;
+        }
+
         for (Sticker sticker : currentUser.getStickersSent()) {
             if (sticker.getReceiver().equals(receiverName)) {
                 String currentImageString = sticker.getStickerDes();
@@ -444,6 +446,15 @@ public class SendStickersActivity extends AppCompatActivity {
     private void onSubmitButtonClicked(String receiverName) {
         if (clickedImageMap.size() == 0) {
             Toast.makeText(this, "Please select an image.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (usersSpinner.getSelectedItem() == null || usersSpinner.getSelectedItem().toString().equals("---")) {
+            Toast.makeText(this, "Please select a receiver.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (currentUser == null) {
             return;
         }
 
