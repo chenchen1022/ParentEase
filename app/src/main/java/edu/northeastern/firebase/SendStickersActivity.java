@@ -345,6 +345,9 @@ public class SendStickersActivity extends AppCompatActivity {
     /**
      * Do a payload when send message to other user.
      *
+     * Citation: Course Module: Week 8 - Firebase Cloud Messaging & Firebase Realtime Database - Firebase Cloud Messaging Video
+     * https://northeastern.instructure.com/courses/136736/pages/firebase-cloud-messaging?module_item_id=8369834
+     *
      * @param targetUserToken the target user token
      * @param sticker         the sticker will sent to other user
      */
@@ -357,7 +360,7 @@ public class SendStickersActivity extends AppCompatActivity {
         JSONObject data = new JSONObject();
         JSONObject payload = new JSONObject();
 
-        String notificationTitle = "New sticker from " + sticker.getSender();
+        String notificationTitle = "New Sticker From " + sticker.getSender();
         String notificationBody = sticker.getStickerDes();
 
         System.out.println("Notification title: " + notificationTitle);
@@ -388,15 +391,22 @@ public class SendStickersActivity extends AppCompatActivity {
     }
 
     /**
-     * Makes a http connection and converts the response to a string.
-     * The demo code of this module - FirebaseDemo3.java is referenced.
+     * Get connection with Firebase Cloud Messaging
      *
-     * @param serverToken the server token
-     * @param jsonObject  the json object to be sent
-     * @return a string
+     * Citation: Course Module: Week 8 - Firebase Cloud Messaging & Firebase Realtime Database - Firebase Cloud Messaging Video
+     * https://northeastern.instructure.com/courses/136736/pages/firebase-cloud-messaging?module_item_id=8369834
+     *
+     * @param serverToken the token of the current user
+     * @param jsonObject the payload json file
+     * @return the FCM response
      */
     private static String fcmHttpConnection(String serverToken, JSONObject jsonObject) {
         // Loads a payload
+
+        System.out.println("Server Token: " + serverToken);
+        System.out.println("Payload Json file: " + jsonObject);
+
+        // do a payload
         try {
             URL url = new URL("https://fcm.googleapis.com/fcm/send");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -418,10 +428,10 @@ public class SendStickersActivity extends AppCompatActivity {
     }
 
     /**
-     * Converts a stream to a string.
+     * Convert the input stream to string.
      *
-     * @param inputStream the input stream
-     * @return a string
+     * @param inputStream the input stream need to be converted to string
+     * @return input stream string
      */
     private static String convertStreamToString(InputStream inputStream) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -493,6 +503,9 @@ public class SendStickersActivity extends AppCompatActivity {
 
     /**
      * Create notification channel.
+     *
+     * Citation: Android Developers / Documentation / UI Guide / Create and manage notification channels
+     * https://developer.android.com/develop/ui/views/notifications/channels
      */
     public void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
