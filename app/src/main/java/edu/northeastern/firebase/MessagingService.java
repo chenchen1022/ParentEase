@@ -59,7 +59,6 @@ public class MessagingService extends FirebaseMessagingService {
             if (task.isSuccessful()) {
                 HashMap tempMap = (HashMap) task.getResult().getValue();
                 if (tempMap == null) {
-                    Log.e("Firebase", "Empty");
                     return;
                 }
                 userName = Objects.requireNonNull(tempMap.get("userName")).toString();
@@ -77,8 +76,8 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
-        @SuppressLint("HardwareIds") User user = new User(this.userToken, this.userName, this.stickersSent, this.stickersReceived);
-        myDataBase.child("users").child(userName).setValue(user);
+        @SuppressLint("HardwareIds") User user = new User(token, this.userName, this.stickersSent, this.stickersReceived);
+        myDataBase.child("users").child(this.userName).setValue(user);
     }
 
     /**
