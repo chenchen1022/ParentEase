@@ -70,7 +70,7 @@ public class MessagingService extends FirebaseMessagingService {
     }
 
     /**
-     * Set user value when new token is on.
+     * Sets user value when new token is on.
      *
      * @param token the token of the user
      */
