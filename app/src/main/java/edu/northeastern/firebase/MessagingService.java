@@ -8,27 +8,18 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.provider.Settings;
-import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-
 import edu.northeastern.atyourservice.R;
-import edu.northeastern.firebase.entity.Sticker;
-import edu.northeastern.firebase.entity.User;
 
 /**
  * The class for messaging service.
- *
+ * <p>
  * Citation: Course Module: Week 8 - Firebase Cloud Messaging & Firebase Realtime Database - Notifications Video
  * https://northeastern.instructure.com/courses/136736/pages/notifications?module_item_id=8369837
  *
@@ -36,11 +27,6 @@ import edu.northeastern.firebase.entity.User;
  */
 public class MessagingService extends FirebaseMessagingService {
 
-    private String userName;
-    private String userToken;
-    private List<Sticker> stickersSent;
-    private List<Sticker> stickersReceived;
-    private DatabaseReference myDataBase;
     private static final String ID = "group_18_stick_it_to_em";
     private static final String NAME = "group_18_stick_it_to_em";
     private static final String DESCRIPTION = "group_18_stick_it_to_em";
@@ -52,32 +38,6 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onCreate() {
         super.onCreate();
-        myDataBase = FirebaseDatabase.getInstance().getReference();
-        userToken = Settings.Secure.getString(
-                getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        myDataBase.child("users").child(userToken).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                HashMap tempMap = (HashMap) task.getResult().getValue();
-                if (tempMap == null) {
-                    return;
-                }
-                userName = Objects.requireNonNull(tempMap.get("userName")).toString();
-            } else {
-                Log.e("Firebase", "Error", task.getException());
-            }
-        });
-    }
-
-    /**
-     * Sets user value when new token is on.
-     *
-     * @param token the token of the user
-     */
-    @Override
-    public void onNewToken(@NonNull String token) {
-        super.onNewToken(token);
-        @SuppressLint("HardwareIds") User user = new User(token, this.userName, this.stickersSent, this.stickersReceived);
-        myDataBase.child("users").child(this.userName).setValue(user);
     }
 
     /**
@@ -115,7 +75,7 @@ public class MessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder builder;
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
 
-        NotificationChannel notificationChannel = new NotificationChannel(ID,NAME, NotificationManager.IMPORTANCE_HIGH);
+        NotificationChannel notificationChannel = new NotificationChannel(ID, NAME, NotificationManager.IMPORTANCE_HIGH);
         notificationChannel.setDescription(DESCRIPTION);
         notificationManager.createNotificationChannel(notificationChannel);
         builder = new NotificationCompat.Builder(this, ID);
@@ -171,6 +131,5 @@ public class MessagingService extends FirebaseMessagingService {
         }
         return output;
     }
-
 }
 

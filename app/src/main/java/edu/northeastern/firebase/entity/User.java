@@ -104,6 +104,15 @@ public class User implements Parcelable {
     }
 
     /**
+     * Sets the user token.
+     *
+     * @param userToken the user token
+     */
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
+    }
+
+    /**
      * Returns a string representation of the class.
      *
      * @return a string representation of the class

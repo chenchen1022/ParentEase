@@ -56,6 +56,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name="edu.northeastern.firebase.MessagingService"
             android:exported="false">
